@@ -27,7 +27,7 @@
     <a href="#about">ABOUT</a>
     <a href="#club">CLUB</a>
   </nav>
-  <button class="cart" aria-label="購物袋，目前 0 件">
+  <button class="cart" id="cartOpenBtn" aria-label="開啟購物袋，目前 0 件" aria-haspopup="true" aria-controls="cartDrawer">
     BAG <span class="cart-count">0</span>
   </button>
 </header>
@@ -107,11 +107,12 @@
         <h3>ONE STROKE TEE</h3>
         <p class="product-desc">左胸主 Logo，右袖波浪線。厚磅純棉，落肩剪裁，日常也能穿的第一件 OSC。</p>
         <div class="size-select" role="group" aria-label="選擇尺寸 ONE STROKE TEE">
-          <button data-size="S">S</button>
-          <button data-size="M">M</button>
-          <button data-size="L">L</button>
-          <button data-size="XL">XL</button>
+          <button type="button" data-size="S">S</button>
+          <button type="button" data-size="M">M</button>
+          <button type="button" data-size="L">L</button>
+          <button type="button" data-size="XL">XL</button>
         </div>
+        <p class="size-hint" aria-live="polite"></p>
         <div class="product-actions">
           <span class="product-price">NT$ 1,680</span>
           <button class="add-bag-btn" data-name="ONE STROKE TEE" data-price="NT$ 1,680">
@@ -142,11 +143,12 @@
         <h3>LINE HOODIE</h3>
         <p class="product-desc">領口 ONE STROKE CLUB，中間直向波浪線。Minimal / Essential 定位，最乾淨的一件。</p>
         <div class="size-select" role="group" aria-label="選擇尺寸 LINE HOODIE">
-          <button data-size="S">S</button>
-          <button data-size="M">M</button>
-          <button data-size="L">L</button>
-          <button data-size="XL">XL</button>
+          <button type="button" data-size="S">S</button>
+          <button type="button" data-size="M">M</button>
+          <button type="button" data-size="L">L</button>
+          <button type="button" data-size="XL">XL</button>
         </div>
+        <p class="size-hint" aria-live="polite"></p>
         <div class="product-actions">
           <span class="product-price">NT$ 2,980</span>
           <button class="add-bag-btn" data-name="LINE HOODIE" data-price="NT$ 2,980">
@@ -177,11 +179,12 @@
         <h3>STATEMENT TEE</h3>
         <p class="product-desc">實心主 Logo，背面大型 ONE STROKE CLUB 直向排列，下擺 KEEP THE LINE MOVING。最強烈的一件。</p>
         <div class="size-select" role="group" aria-label="選擇尺寸 STATEMENT TEE">
-          <button data-size="S">S</button>
-          <button data-size="M">M</button>
-          <button data-size="L">L</button>
-          <button data-size="XL">XL</button>
+          <button type="button" data-size="S">S</button>
+          <button type="button" data-size="M">M</button>
+          <button type="button" data-size="L">L</button>
+          <button type="button" data-size="XL">XL</button>
         </div>
+        <p class="size-hint" aria-live="polite"></p>
         <div class="product-actions">
           <span class="product-price">NT$ 1,880</span>
           <button class="add-bag-btn" data-name="STATEMENT TEE" data-price="NT$ 1,880">
@@ -332,11 +335,12 @@
       <h3 id="modalName"></h3>
       <p id="modalDesc"></p>
       <div class="size-select" id="modalSizes" role="group" aria-label="選擇尺寸">
-        <button data-size="S">S</button>
-        <button data-size="M">M</button>
-        <button data-size="L">L</button>
-        <button data-size="XL">XL</button>
+        <button type="button" data-size="S">S</button>
+        <button type="button" data-size="M">M</button>
+        <button type="button" data-size="L">L</button>
+        <button type="button" data-size="XL">XL</button>
       </div>
+      <p class="size-hint" id="modalSizeHint" aria-live="polite"></p>
       <div class="product-actions">
         <span class="product-price" id="modalPrice"></span>
         <button class="add-bag-btn" id="modalAddBtn">
@@ -345,6 +349,28 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+  <div class="cart-backdrop" data-cart-close></div>
+  <aside class="cart-panel" role="dialog" aria-modal="true" aria-label="購物袋">
+    <div class="cart-header">
+      <h3>YOUR BAG</h3>
+      <button class="cart-close" data-cart-close aria-label="關閉購物袋">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty" id="cartEmpty">購物袋是空的。挑一件喜歡的單品，開始你的第一筆 DROP 001。</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-subtotal-row">
+        <span>SUBTOTAL</span>
+        <span id="cartSubtotal">NT$ 0</span>
+      </div>
+      <button class="btn btn-checkout" id="cartCheckoutBtn">CHECKOUT →</button>
+      <p class="cart-note">此為前端示範，尚未串接真實金流與結帳流程。</p>
+    </div>
+  </aside>
 </div>
 
 </body>
