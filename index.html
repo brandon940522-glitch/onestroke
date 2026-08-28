@@ -16,12 +16,13 @@
 <div class="noise" aria-hidden="true"></div>
 
 <header class="site-header" id="siteHeader">
-  <a class="logo-link" href="#top" aria-label="ONE STROKE CLUB 首頁"><img src="logo-transparent.png" alt="ONE STROKE CLUB"></a>
+  <a class="logo-link" href="#top" aria-label="ONE STROKE CLUB 首頁"><img src="assets/logo-transparent.png" alt="ONE STROKE CLUB"></a>
   <nav class="desktop-nav" aria-label="主要導覽">
     <button data-menu="shop">商品 <span>＋</span></button>
     <a href="#story">品牌故事</a>
     <a href="#news">最新消息</a>
     <a href="#lookbook">Lookbook</a>
+    <a href="#membership">會員方案</a>
     <a href="#community">Community</a>
   </nav>
   <div class="header-tools">
@@ -38,7 +39,7 @@
     <div class="menu-top"><span>OSC / MENU</span><button id="menuClose">關閉 ×</button></div>
     <div class="menu-grid">
       <section><small>SHOP</small><a href="#shop" data-close-menu>全部商品</a><a href="#shop" data-close-menu>上衣</a><a href="#shop" data-close-menu>褲子</a><a href="#shop" data-close-menu>外套</a><a href="#shop" data-close-menu>配件</a><a href="#shop" data-close-menu>NEW ARRIVALS</a></section>
-      <section><small>DISCOVER</small><a href="#story" data-close-menu>品牌故事</a><a href="#news" data-close-menu>最新消息</a><a href="#lookbook" data-close-menu>Lookbook</a><a href="#community" data-close-menu>OSC Community</a></section>
+      <section><small>DISCOVER</small><a href="#story" data-close-menu>品牌故事</a><a href="#news" data-close-menu>最新消息</a><a href="#lookbook" data-close-menu>Lookbook</a><a href="#membership" data-close-menu>會員方案</a><a href="#community" data-close-menu>OSC Community</a></section>
       <section><small>MY OSC</small><button data-account>我的資料</button><button data-wishlist>收藏清單 <b id="menuWishCount">0</b></button><button id="myListBtn">我的清單</button><button id="ordersBtn">我的訂單</button><button id="notifyBtn">通知</button></section>
     </div>
     <div class="menu-bottom"><span>TAIWAN / TWD / 繁體中文</span><span>INSTAGRAM · THREADS · STRAVA</span></div>
@@ -76,7 +77,7 @@
     <div class="hero-bottom"><p>不是追著速度跑。<br>是讓自己一直往前。</p><a class="circle-link" href="#shop">探索 DROP 001 ↘</a></div>
   </div>
   <div class="hero-art">
-    <div class="art-glow"></div><div class="hero-logo-frame"><img src="shirt-logo.png" alt="ONE STROKE CLUB Logo"></div>
+    <div class="art-glow"></div><div class="hero-logo-frame"><img src="assets/shirt-logo.png" alt="ONE STROKE CLUB Logo"></div>
     <div class="art-label">01 / CONTINUOUS<br>LINE SYSTEM</div>
   </div>
   <div class="hero-scroll">SCROLL <span></span></div>
@@ -87,7 +88,7 @@
 <section class="intro section-pad" id="story">
   <div class="section-no">01 / BRAND STORY</div>
   <div class="intro-copy"><h2>一筆，<br>不中斷。</h2><p>ONE STROKE 是一條從起點延伸出去的線。它可以是一次呼吸、一個步伐、一段創作，也可以只是今天比昨天多走了一點。</p><a href="#manifesto">閱讀品牌故事 ↗</a></div>
-  <div class="intro-mark"><img src="logo-badge.png" alt="ONE STROKE CLUB logo badge"></div>
+  <div class="intro-mark"><img src="assets/logo-badge.png" alt="ONE STROKE CLUB logo badge"></div>
 </section>
 
 <section class="shop section-dark section-pad" id="shop">
@@ -102,8 +103,8 @@
 <section class="editorial section-pad" id="lookbook">
   <div class="section-head"><div><div class="section-no">03 / LOOKBOOK</div><h2>THE WORLD<br>AROUND THE LINE</h2></div><p>從城市、運動到日常。<br>OSC 不只是一件衣服，而是穿著它生活的方式。</p></div>
   <div class="editorial-grid">
-    <article class="editorial-card large"><img src="product-sheet.png" alt="DROP 001 商品設計"><span>DROP 001 / PRODUCT STUDY</span></article>
-    <article class="editorial-card"><img src="brand-elements.png" alt="品牌線條系統"><span>LINE SYSTEM / 001</span></article>
+    <article class="editorial-card large"><img src="assets/product-sheet.png" alt="DROP 001 商品設計"><span>DROP 001 / PRODUCT STUDY</span></article>
+    <article class="editorial-card"><img src="assets/brand-elements.png" alt="品牌線條系統"><span>LINE SYSTEM / 001</span></article>
     <article class="editorial-card dark"><div class="giant">OSC</div><span>TAIPEI / 2026</span></article>
   </div>
 </section>
@@ -116,14 +117,77 @@
   </div>
 </section>
 
-<section class="community" id="community">
-  <div class="community-bg"></div><div class="community-content"><div class="section-no">05 / COMMUNITY</div><h2>NOT JUST<br>CLOTHING.<br><em>A MOVEMENT.</em></h2><p>加入 OSC 社群，接收 DROP、活動、合作企劃與會員限定內容。</p><div class="community-actions"><button type="button" class="lime-btn" data-join-community>JOIN OSC COMMUNITY →</button><a href="#" class="text-link">Instagram ↗</a><a href="#" class="text-link">Threads ↗</a><a href="#" class="text-link">Strava ↗</a></div></div>
+<section class="section-pad membership" id="membership">
+  <div class="section-head reveal">
+    <div><div class="section-no">05 / MEMBERSHIP</div><h2>選擇你的<br>移動方式。</h2></div>
+    <p>一次付費解鎖 OSC PASS 全部特權；同時每一次購物都在累積 PTS，帶你沿著這條線持續升級。</p>
+  </div>
+
+  <div class="tier-line reveal">
+    <div class="tier-row" id="tierRow">
+      <div class="tier-node" data-level="OSC MEMBER">
+        <span class="section-no">STEP 01</span>
+        <b>OSC MEMBER</b>
+        <small>0 – 299 PTS</small>
+        <p>新會員禮｜生日折扣碼</p>
+      </div>
+      <div class="tier-node" data-level="OSC MEMBER+">
+        <span class="section-no">STEP 02</span>
+        <b>OSC MEMBER+</b>
+        <small>300 – 999 PTS</small>
+        <p>每月精選優惠｜生日禮金</p>
+      </div>
+      <div class="tier-node" data-level="OSC PRO">
+        <span class="section-no">STEP 03</span>
+        <b>OSC PRO</b>
+        <small>1,000 PTS+</small>
+        <p>DROP 優先預購｜限定活動邀請</p>
+      </div>
+    </div>
+    <div class="progress"><span id="tierFill"></span></div>
+    <div class="tier-meta"><span>目前 <b id="tierPts">0</b> PTS</span><span id="tierNext">再 300 點進入 OSC MEMBER+</span></div>
+  </div>
+
+  <div class="pass-grid">
+    <article class="pass-card reveal">
+      <div class="pass-eyebrow">OSC PASS</div>
+      <div class="pass-price"><span>$480</span><s>$980</s></div>
+      <p class="pass-desc">一次付費・終身有效。給日常穿 OSC 的你。</p>
+      <button class="black-btn" type="button" data-pass="basic">加入 OSC PASS →</button>
+      <ul class="pass-features">
+        <li>全年免運</li>
+        <li>DROP 搶先 24 小時預購</li>
+        <li>生日專屬禮券</li>
+        <li class="off">限定商品優先購買資格</li>
+        <li class="off">雙倍購物里程 PTS</li>
+      </ul>
+    </article>
+
+    <article class="pass-card featured reveal">
+      <span class="pass-tag">BEST VALUE</span>
+      <div class="pass-eyebrow">OSC PASS+</div>
+      <div class="pass-price"><span>$880</span><s>$1,980</s></div>
+      <p class="pass-desc">一次付費・終身有效。全部特權一次解鎖。</p>
+      <button class="lime-btn" type="button" data-pass="plus">加入 OSC PASS+ →</button>
+      <ul class="pass-features">
+        <li>全年免運</li>
+        <li>DROP 搶先 24 小時預購</li>
+        <li>生日專屬禮券</li>
+        <li>限定商品優先購買資格</li>
+        <li>雙倍購物里程 PTS</li>
+      </ul>
+    </article>
+  </div>
 </section>
 
-<section class="newsletter" id="newsletter"><div class="section-no">06 / STAY IN MOTION</div><h2>加入這條線。</h2><p>留下 Email，第一時間收到新品 DROP、活動與 OSC Community 消息。</p><form id="newsletterForm"><input id="emailInput" type="email" placeholder="你的 Email / EMAIL ADDRESS" required><button type="submit">加入社群 →</button></form><small id="newsletterMsg"></small></section>
+<section class="community" id="community">
+  <div class="community-bg"></div><div class="community-content"><div class="section-no">06 / COMMUNITY</div><h2>NOT JUST<br>CLOTHING.<br><em>A MOVEMENT.</em></h2><p>加入 OSC 社群，接收 DROP、活動、合作企劃與會員限定內容。</p><div class="community-actions"><button type="button" class="lime-btn" data-join-community>JOIN OSC COMMUNITY →</button><a href="#" class="text-link">Instagram ↗</a><a href="#" class="text-link">Threads ↗</a><a href="#" class="text-link">Strava ↗</a></div></div>
+</section>
+
+<section class="newsletter" id="newsletter"><div class="section-no">07 / STAY IN MOTION</div><h2>加入這條線。</h2><p>留下 Email，第一時間收到新品 DROP、活動與 OSC Community 消息。</p><form id="newsletterForm"><input id="emailInput" type="email" placeholder="你的 Email / EMAIL ADDRESS" required><button type="submit">加入社群 →</button></form><small id="newsletterMsg"></small></section>
 </main>
 
-<footer><div class="footer-logo"><img src="logo-transparent.png" alt="ONE STROKE CLUB"><p>KEEP THE LINE MOVING.</p></div><div><small>EXPLORE</small><a href="#shop">商品</a><a href="#story">品牌故事</a><a href="#news">最新消息</a><a href="#lookbook">Lookbook</a></div><div><small>MY OSC</small><button data-account>我的資料</button><button data-wishlist>收藏清單</button><button id="footerListBtn">我的清單</button><button id="footerOrdersBtn">我的訂單</button></div><div><small>CONNECT</small><a href="#">Instagram ↗</a><a href="#">Threads ↗</a><a href="#">Strava ↗</a><a href="mailto:onestroketw@gmail.com">onestroketw@gmail.com</a></div><div class="footer-bottom"><span>© 2026 ONE STROKE CLUB™</span><span>TAIWAN / TWD / 繁體中文</span></div></footer>
+<footer><div class="footer-logo"><img src="assets/logo-transparent.png" alt="ONE STROKE CLUB"><p>KEEP THE LINE MOVING.</p></div><div><small>EXPLORE</small><a href="#shop">商品</a><a href="#story">品牌故事</a><a href="#news">最新消息</a><a href="#lookbook">Lookbook</a><a href="#membership">會員方案</a></div><div><small>MY OSC</small><button data-account>我的資料</button><button data-wishlist>收藏清單</button><button id="footerListBtn">我的清單</button><button id="footerOrdersBtn">我的訂單</button></div><div><small>CONNECT</small><a href="#">Instagram ↗</a><a href="#">Threads ↗</a><a href="#">Strava ↗</a><a href="mailto:onestroketw@gmail.com">onestroketw@gmail.com</a></div><div class="footer-bottom"><span>© 2026 ONE STROKE CLUB™</span><span>TAIWAN / TWD / 繁體中文</span></div></footer>
 
 <div class="account-center" id="accountCenter" aria-hidden="true">
   <div class="account-center-card">
@@ -140,7 +204,7 @@
 <div class="auth-modal" id="authModal" aria-hidden="true">
   <div class="auth-card auth-flow-card">
     <button class="modal-close" id="authClose">×</button>
-    <div class="auth-brand"><img src="logo-transparent.png" alt="ONE STROKE CLUB"><span>OSC MEMBER / TAIWAN</span></div>
+    <div class="auth-brand"><img src="assets/logo-transparent.png" alt="ONE STROKE CLUB"><span>OSC MEMBER / TAIWAN</span></div>
     <div class="auth-progress"><span class="auth-step active" data-step-dot="1">01</span><i></i><span class="auth-step" data-step-dot="2">02</span><i></i><span class="auth-step" data-step-dot="3">03</span></div>
     <section class="auth-step-panel active" data-auth-panel="1">
       <div class="auth-tabs"><button data-auth-mode="login">登入</button><button data-auth-mode="register" class="active">註冊會員</button></div>
@@ -173,7 +237,7 @@
     </section>
   </div>
 </div>
-<div class="modal" id="productModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" data-close-modal>×</button><div class="modal-product"><div class="modal-visual"><img id="modalProductImg" src="product-sheet.png" alt=""><img class="modal-logo-mark" src="shirt-logo.png" alt="ONE STROKE CLUB Logo"></div><div class="modal-copy"><span id="modalCategory" class="eyebrow"></span><h2 id="modalProductName"></h2><strong id="modalProductPrice"></strong><p id="modalProductDesc"></p><div class="size-row" id="modalSizes"></div><button class="black-btn" id="modalAdd">加入購物袋 →</button><div class="accordion"><button data-acc="details">DETAILS <span>＋</span></button><div data-panel="details"></div><button data-acc="fit">FIT INFO <span>＋</span></button><div data-panel="fit"></div><button data-acc="shipping">SHIPPING <span>＋</span></button><div data-panel="shipping"></div><button data-acc="care">CARE <span>＋</span></button><div data-panel="care"></div></div></div></div></div></div>
+<div class="modal" id="productModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" data-close-modal>×</button><div class="modal-product"><div class="modal-visual"><img id="modalProductImg" src="assets/product-sheet.png" alt=""><img class="modal-logo-mark" src="assets/shirt-logo.png" alt="ONE STROKE CLUB Logo"></div><div class="modal-copy"><span id="modalCategory" class="eyebrow"></span><h2 id="modalProductName"></h2><strong id="modalProductPrice"></strong><p id="modalProductDesc"></p><div class="size-row" id="modalSizes"></div><button class="black-btn" id="modalAdd">加入購物袋 →</button><div class="accordion"><button data-acc="details">DETAILS <span>＋</span></button><div data-panel="details"></div><button data-acc="fit">FIT INFO <span>＋</span></button><div data-panel="fit"></div><button data-acc="shipping">SHIPPING <span>＋</span></button><div data-panel="shipping"></div><button data-acc="care">CARE <span>＋</span></button><div data-panel="care"></div></div></div></div></div></div>
 
 <div class="checkout-modal" id="checkoutModal" aria-hidden="true">
   <div class="checkout-card">
