@@ -4,12 +4,11 @@ const products = [
   {id:3,name:'STATEMENT TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:1880,tag:'DROP 001',desc:'實心主 Logo，背面大型 ONE STROKE CLUB 直向排列。最強烈的一件。',details:'260g 厚磅棉｜正反面品牌圖像｜寬肩版型｜DROP 001',fit:'Regular Relaxed。版型挺、肩線略落。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗，避免漂白與高溫。'}
 ];
 const futureCategories={bottom:'褲子',outer:'外套',accessory:'配件'};
-const productImg='assets/product-sheet.png', officialShirtLogo='assets/shirt-logo-official.png';
+const productImg='product-sheet.png', officialShirtLogo='shirt-logo-official.png';
 const SUPABASE_URL = window.OSC_SUPABASE_URL || 'YOUR_SUPABASE_URL';
 const SUPABASE_ANON_KEY = window.OSC_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
 const supabaseReady = SUPABASE_URL.startsWith('https://') && !SUPABASE_ANON_KEY.startsWith('YOUR_') && !!window.supabase;
 const sb = supabaseReady ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}) : null;
-
 let cart=JSON.parse(localStorage.getItem('osc_cart')||'[]');
 let currentUser=null, profile=null, wishlist=[], orders=[], points=0, coupons=[], notifications=[];
 let selectedSize='M',activeProduct=products[0],activeAccountView='overview',authMode='register',registrationDraft=null,appliedCoupon=null;
@@ -128,7 +127,6 @@ async function placeOrder(){
   cart=[];saveCart();await hydrateUser(currentUser);renderBag();$('#checkoutModal').classList.remove('open');document.body.classList.remove('modal-open');showToast(`訂單 ${orderNo} 已建立，累積 ${earned} 點購物里程`)
 }
 function joinCommunity(){if(currentUser){document.querySelector('#newsletter')?.scrollIntoView({behavior:'smooth'});showToast('已開啟 OSC Community 訂閱入口。')}else authOpen('register')}
-
 renderProducts();renderBag();updateCounts();renderAccount();
 $('#productGrid').addEventListener('click',e=>{const wish=e.target.closest('[data-wish]');if(wish){toggleWishlist(Number(wish.dataset.wish));return}const add=e.target.closest('[data-add]');if(add){addToCart(products.find(p=>p.id===Number(add.dataset.add)));return}const detail=e.target.closest('[data-detail]');if(detail)openProduct(detail.dataset.detail);if(e.target.closest('[data-join-community]'))joinCommunity()});
 $$('.filter').forEach(b=>b.addEventListener('click',()=>{$$('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderProducts(b.dataset.filter)}));
@@ -143,5 +141,4 @@ $('#loginBtn').addEventListener('click',()=>authOpen(currentUser?'login':'regist
 $('#accountClose').addEventListener('click',closeAccount);$('#accountContent').addEventListener('click',e=>{const view=e.target.closest('[data-account-view]');if(view){activeAccountView=view.dataset.accountView;renderAccount();return}const prod=e.target.closest('[data-account-product]');if(prod){closeAccount();openProduct(prod.dataset.accountProduct)}if(e.target.closest('[data-account-shop]')){closeAccount();document.querySelector('#shop').scrollIntoView({behavior:'smooth'})}if(e.target.closest('#centerLoginBtn'))authOpen('register');if(e.target.closest('#logoutBtn'))logout();if(e.target.closest('#newListBtn'))showToast('清單功能已建立資料架構，下一階段可做成自訂清單。')});$('#accountNav').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(!b)return;activeAccountView=b.dataset.view;renderAccount()});
 document.addEventListener('submit',e=>{if(e.target.id==='profileForm')saveProfile(e)});$('#authModal').addEventListener('click',e=>{if(e.target.id==='authModal')authClose()});$('#accountCenter').addEventListener('click',e=>{if(e.target.id==='accountCenter')closeAccount()});$('#checkoutModal').addEventListener('click',e=>{if(e.target.id==='checkoutModal'){e.currentTarget.classList.remove('open');document.body.classList.remove('modal-open')}});
 let lastY=scrollY;addEventListener('scroll',()=>{const h=$('#siteHeader');if(scrollY>120&&scrollY>lastY)h.classList.add('hidden');else h.classList.remove('hidden');lastY=scrollY},{passive:true});addEventListener('mousemove',e=>{const c=$('.cursor-dot');if(c){c.style.left=e.clientX+'px';c.style.top=e.clientY+'px'}});$$('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{hideDrawers();if(a.closest('#menuOverlay'))toggleMenu(false)}));
-
 if(supabaseReady){sb.auth.onAuthStateChange(async(event,session)=>{if(session?.user)await hydrateUser(session.user);else if(event==='SIGNED_OUT')await refreshUser()});refreshUser()}else{console.warn('[OSC] Supabase 尚未設定：請填入 OSC_SUPABASE_URL / OSC_SUPABASE_ANON_KEY。會員資料不會再以 localStorage 模擬。')}
