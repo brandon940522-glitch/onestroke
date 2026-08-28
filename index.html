@@ -1,257 +1,1694 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#111111">
-<meta name="description" content="ONE STROKE CLUB — 台灣獨立服飾品牌。KEEP THE LINE MOVING.">
-<title>ONE STROKE CLUB — KEEP THE LINE MOVING.</title>
-<link rel="stylesheet" href="styles.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>window.OSC_SUPABASE_URL = "YOUR_SUPABASE_URL"; window.OSC_SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";</script>
-<script src="script.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+  <meta
+    name="description"
+    content="ONE STROKE CLUB — 台灣獨立服飾品牌。KEEP THE LINE MOVING."
+  >
+
+  <title>ONE STROKE CLUB — KEEP THE LINE MOVING.</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    window.OSC_SUPABASE_URL = "YOUR_SUPABASE_URL";
+    window.OSC_SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+  </script>
+
+  <script src="script.js" defer></script>
 </head>
+
 <body>
-<div class="cursor-dot" aria-hidden="true"></div>
-<div class="noise" aria-hidden="true"></div>
 
-<header class="site-header" id="siteHeader">
-  <a class="logo-link" href="#top" aria-label="ONE STROKE CLUB 首頁"><img src="assets/logo-transparent.png" alt="ONE STROKE CLUB"></a>
-  <nav class="desktop-nav" aria-label="主要導覽">
-    <button data-menu="shop">商品 <span>＋</span></button>
-    <a href="#story">品牌故事</a>
-    <a href="#news">最新消息</a>
-    <a href="#lookbook">Lookbook</a>
-    <a href="#membership">會員方案</a>
-    <a href="#community">Community</a>
-  </nav>
-  <div class="header-tools">
-    <button class="icon-btn" id="searchBtn" aria-label="搜尋">⌕</button>
-    <button class="icon-btn" id="accountBtn" aria-label="我的 OSC">◎</button>
-    <button class="icon-btn heart" id="wishlistBtn" aria-label="收藏">♡<span class="count" id="wishCount">0</span></button>
-    <button class="bag-btn" id="bagBtn">購物袋 <span id="bagCount">0</span></button>
-    <button class="menu-btn" id="menuBtn" aria-label="開啟選單" aria-expanded="false"><span></span><span></span></button>
-  </div>
-</header>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
 
-<div class="menu-overlay" id="menuOverlay" aria-hidden="true">
-  <div class="menu-panel">
-    <div class="menu-top"><span>OSC / MENU</span><button id="menuClose">關閉 ×</button></div>
-    <div class="menu-grid">
-      <section><small>SHOP</small><a href="#shop" data-close-menu>全部商品</a><a href="#shop" data-close-menu>上衣</a><a href="#shop" data-close-menu>褲子</a><a href="#shop" data-close-menu>外套</a><a href="#shop" data-close-menu>配件</a><a href="#shop" data-close-menu>NEW ARRIVALS</a></section>
-      <section><small>DISCOVER</small><a href="#story" data-close-menu>品牌故事</a><a href="#news" data-close-menu>最新消息</a><a href="#lookbook" data-close-menu>Lookbook</a><a href="#membership" data-close-menu>會員方案</a><a href="#community" data-close-menu>OSC Community</a></section>
-      <section><small>MY OSC</small><button data-account>我的資料</button><button data-wishlist>收藏清單 <b id="menuWishCount">0</b></button><button id="myListBtn">我的清單</button><button id="ordersBtn">我的訂單</button><button id="notifyBtn">通知</button></section>
+  <!-- HEADER -->
+  <header class="site-header" id="siteHeader">
+
+    <a class="logo-link" href="#top" aria-label="ONE STROKE CLUB 首頁">
+      <img src="./assets/logo-transparent.png" alt="ONE STROKE CLUB">
+    </a>
+
+    <nav class="desktop-nav" aria-label="主要導覽">
+      <button data-menu="shop">
+        商品 <span>＋</span>
+      </button>
+
+      <a href="#story">品牌故事</a>
+      <a href="#news">最新消息</a>
+      <a href="#lookbook">Lookbook</a>
+      <a href="#membership">會員方案</a>
+      <a href="#community">Community</a>
+    </nav>
+
+    <div class="header-tools">
+
+      <button class="icon-btn" id="searchBtn" aria-label="搜尋">
+        ⌕
+      </button>
+
+      <button class="icon-btn" id="accountBtn" aria-label="我的 OSC">
+        ◎
+      </button>
+
+      <button class="icon-btn heart" id="wishlistBtn" aria-label="收藏">
+        ♡
+        <span class="count" id="wishCount">0</span>
+      </button>
+
+      <button class="bag-btn" id="bagBtn">
+        購物袋 <span id="bagCount">0</span>
+      </button>
+
+      <button
+        class="menu-btn"
+        id="menuBtn"
+        aria-label="開啟選單"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+      </button>
+
     </div>
-    <div class="menu-bottom"><span>TAIWAN / TWD / 繁體中文</span><span>INSTAGRAM · THREADS · STRAVA</span></div>
-  </div>
-</div>
+  </header>
 
-<div class="search-layer" id="searchLayer" aria-hidden="true">
-  <div class="search-box">
-    <div class="search-head"><span>SEARCH / 搜尋</span><button id="searchClose">關閉 ×</button></div>
-    <label class="search-input"><span>⌕</span><input id="searchInput" type="search" placeholder="搜尋商品、系列、企劃…" autocomplete="off"></label>
-    <div class="search-results" id="searchResults"><p>輸入關鍵字開始探索。</p></div>
-  </div>
-</div>
 
-<aside class="drawer" id="bagDrawer" aria-hidden="true">
-  <div class="drawer-head"><strong>YOUR BAG / 購物袋</strong><button data-close-drawer>關閉 ×</button></div>
-  <div class="drawer-body" id="bagItems"><p class="empty">購物袋目前是空的。<br>挑一件單品，開始你的下一段移動。</p></div>
-  <div class="drawer-foot"><div><span>小計</span><strong id="bagTotal">NT$ 0</strong></div><button class="black-btn" id="checkoutBtn">前往結帳 →</button><small>台灣地區｜NT$ 計價</small></div>
-</aside>
+  <!-- MENU -->
+  <div class="menu-overlay" id="menuOverlay" aria-hidden="true">
 
-<aside class="drawer account-drawer" id="accountDrawer" aria-hidden="true">
-  <div class="drawer-head"><strong>MY OSC / 我的帳戶</strong><button data-close-drawer>關閉 ×</button></div>
-  <div class="account-hero"><span class="eyebrow">OSC MEMBER</span><h2>把每一次移動<br>留在你的軌跡裡。</h2><p>登入後同步收藏、清單、訂單與 DROP 通知。</p></div>
-  <button class="black-btn" id="loginBtn">登入 / 註冊</button>
-  <div class="account-links"><button data-wishlist>♡ 收藏清單 <span id="accountWishCount">0</span></button><button id="accountListBtn">＋ 我的清單</button><button id="accountOrdersBtn">▣ 我的訂單</button><button id="accountDataBtn">◎ 我的資料</button></div>
-</aside>
+    <div class="menu-panel">
 
-<main id="top">
-<section class="hero">
-  <div class="hero-gridline"></div>
-  <div class="hero-meta"><span>OSC / 001</span><span>TAIWAN · 2026</span></div>
-  <div class="hero-copy">
-    <p class="eyebrow">ONE STROKE CLUB® / DROP 001</p>
-    <h1>KEEP<br><em>THE LINE</em><br>MOVING.</h1>
-    <div class="hero-bottom"><p>不是追著速度跑。<br>是讓自己一直往前。</p><a class="circle-link" href="#shop">探索 DROP 001 ↘</a></div>
-  </div>
-  <div class="hero-art">
-    <div class="art-glow"></div><div class="hero-logo-frame"><img src="assets/shirt-logo.png" alt="ONE STROKE CLUB Logo"></div>
-    <div class="art-label">01 / CONTINUOUS<br>LINE SYSTEM</div>
-  </div>
-  <div class="hero-scroll">SCROLL <span></span></div>
-</section>
-
-<section class="ticker"><div>ONE STROKE CLUB · MOVEMENT · CLOTHING · COMMUNITY · ONE STROKE CLUB · MOVEMENT · CLOTHING · COMMUNITY ·</div></section>
-
-<section class="intro section-pad" id="story">
-  <div class="section-no">01 / BRAND STORY</div>
-  <div class="intro-copy"><h2>一筆，<br>不中斷。</h2><p>ONE STROKE 是一條從起點延伸出去的線。它可以是一次呼吸、一個步伐、一段創作，也可以只是今天比昨天多走了一點。</p><a href="#manifesto">閱讀品牌故事 ↗</a></div>
-  <div class="intro-mark"><img src="assets/logo-badge.png" alt="ONE STROKE CLUB logo badge"></div>
-</section>
-
-<section class="shop section-dark section-pad" id="shop">
-  <div class="section-head dark-head"><div><div class="section-no">02 / SHOP</div><h2>FEATURED<br>DROP 001</h2></div><div class="shop-tools"><button class="filter active" data-filter="all">全部</button><button class="filter" data-filter="top">上衣</button><button class="filter" data-filter="bottom">褲子</button><button class="filter" data-filter="outer">外套</button></div></div>
-  <div class="product-grid" id="productGrid"></div>
-</section>
-
-<section class="manifesto" id="manifesto">
-  <div class="manifesto-no">OSC / MANIFESTO</div><div class="manifesto-lines"><span>MOVE.</span><span>DON'T RUSH.</span><span>DON'T STOP.</span></div><p>速度不是我們追求的答案。<br>持續，才是。</p>
-</section>
-
-<section class="editorial section-pad" id="lookbook">
-  <div class="section-head"><div><div class="section-no">03 / LOOKBOOK</div><h2>THE WORLD<br>AROUND THE LINE</h2></div><p>從城市、運動到日常。<br>OSC 不只是一件衣服，而是穿著它生活的方式。</p></div>
-  <div class="editorial-grid">
-    <article class="editorial-card large"><img src="assets/product-sheet.png" alt="DROP 001 商品設計"><span>DROP 001 / PRODUCT STUDY</span></article>
-    <article class="editorial-card"><img src="assets/brand-elements.png" alt="品牌線條系統"><span>LINE SYSTEM / 001</span></article>
-    <article class="editorial-card dark"><div class="giant">OSC</div><span>TAIPEI / 2026</span></article>
-  </div>
-</section>
-
-<section class="news section-pad" id="news">
-  <div class="section-no">04 / LATEST NEWS</div><div class="news-list">
-    <article><span>08.28.2026 / DROP</span><h3>DROP 001 — 第一段線，正式開始。</h3><a href="#shop">探索商品 ↗</a></article>
-    <article><span>COMING SOON / CLUB</span><h3>OSC RUN 001 — 城市夜跑企劃</h3><a href="#community">加入 Community ↗</a></article>
-    <article><span>COMING SOON / COLLAB</span><h3>ONE STROKE CLUB × ＿＿＿</h3><a href="#community">即將公開 ↗</a></article>
-  </div>
-</section>
-
-<section class="section-pad membership" id="membership">
-  <div class="section-head reveal">
-    <div><div class="section-no">05 / MEMBERSHIP</div><h2>選擇你的<br>移動方式。</h2></div>
-    <p>一次付費解鎖 OSC PASS 全部特權；同時每一次購物都在累積 PTS，帶你沿著這條線持續升級。</p>
-  </div>
-
-  <div class="tier-line reveal">
-    <div class="tier-row" id="tierRow">
-      <div class="tier-node" data-level="OSC MEMBER">
-        <span class="section-no">STEP 01</span>
-        <b>OSC MEMBER</b>
-        <small>0 – 299 PTS</small>
-        <p>新會員禮｜生日折扣碼</p>
+      <div class="menu-top">
+        <span>OSC / MENU</span>
+        <button id="menuClose">關閉 ×</button>
       </div>
-      <div class="tier-node" data-level="OSC MEMBER+">
-        <span class="section-no">STEP 02</span>
-        <b>OSC MEMBER+</b>
-        <small>300 – 999 PTS</small>
-        <p>每月精選優惠｜生日禮金</p>
+
+      <div class="menu-grid">
+
+        <section>
+          <small>SHOP</small>
+
+          <a href="#shop" data-close-menu>全部商品</a>
+          <a href="#shop" data-close-menu>上衣</a>
+          <a href="#shop" data-close-menu>褲子</a>
+          <a href="#shop" data-close-menu>外套</a>
+          <a href="#shop" data-close-menu>配件</a>
+          <a href="#shop" data-close-menu>NEW ARRIVALS</a>
+        </section>
+
+        <section>
+          <small>DISCOVER</small>
+
+          <a href="#story" data-close-menu>品牌故事</a>
+          <a href="#news" data-close-menu>最新消息</a>
+          <a href="#lookbook" data-close-menu>Lookbook</a>
+          <a href="#membership" data-close-menu>會員方案</a>
+          <a href="#community" data-close-menu>OSC Community</a>
+        </section>
+
+        <section>
+          <small>MY OSC</small>
+
+          <button data-account>我的資料</button>
+
+          <button data-wishlist>
+            收藏清單 <b id="menuWishCount">0</b>
+          </button>
+
+          <button id="myListBtn">我的清單</button>
+          <button id="ordersBtn">我的訂單</button>
+          <button id="notifyBtn">通知</button>
+        </section>
+
       </div>
-      <div class="tier-node" data-level="OSC PRO">
-        <span class="section-no">STEP 03</span>
-        <b>OSC PRO</b>
-        <small>1,000 PTS+</small>
-        <p>DROP 優先預購｜限定活動邀請</p>
+
+      <div class="menu-bottom">
+        <span>TAIWAN / TWD / 繁體中文</span>
+        <span>INSTAGRAM · THREADS · STRAVA</span>
       </div>
+
     </div>
-    <div class="progress"><span id="tierFill"></span></div>
-    <div class="tier-meta"><span>目前 <b id="tierPts">0</b> PTS</span><span id="tierNext">再 300 點進入 OSC MEMBER+</span></div>
   </div>
 
-  <div class="pass-grid">
-    <article class="pass-card reveal">
-      <div class="pass-eyebrow">OSC PASS</div>
-      <div class="pass-price"><span>$480</span><s>$980</s></div>
-      <p class="pass-desc">一次付費・終身有效。給日常穿 OSC 的你。</p>
-      <button class="black-btn" type="button" data-pass="basic">加入 OSC PASS →</button>
-      <ul class="pass-features">
-        <li>全年免運</li>
-        <li>DROP 搶先 24 小時預購</li>
-        <li>生日專屬禮券</li>
-        <li class="off">限定商品優先購買資格</li>
-        <li class="off">雙倍購物里程 PTS</li>
-      </ul>
-    </article>
 
-    <article class="pass-card featured reveal">
-      <span class="pass-tag">BEST VALUE</span>
-      <div class="pass-eyebrow">OSC PASS+</div>
-      <div class="pass-price"><span>$880</span><s>$1,980</s></div>
-      <p class="pass-desc">一次付費・終身有效。全部特權一次解鎖。</p>
-      <button class="lime-btn" type="button" data-pass="plus">加入 OSC PASS+ →</button>
-      <ul class="pass-features">
-        <li>全年免運</li>
-        <li>DROP 搶先 24 小時預購</li>
-        <li>生日專屬禮券</li>
-        <li>限定商品優先購買資格</li>
-        <li>雙倍購物里程 PTS</li>
-      </ul>
-    </article>
+  <!-- SEARCH -->
+  <div class="search-layer" id="searchLayer" aria-hidden="true">
+
+    <div class="search-box">
+
+      <div class="search-head">
+        <span>SEARCH / 搜尋</span>
+        <button id="searchClose">關閉 ×</button>
+      </div>
+
+      <label class="search-input">
+        <span>⌕</span>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="搜尋商品、系列、企劃…"
+          autocomplete="off"
+        >
+      </label>
+
+      <div class="search-results" id="searchResults">
+        <p>輸入關鍵字開始探索。</p>
+      </div>
+
+    </div>
   </div>
-</section>
 
-<section class="community" id="community">
-  <div class="community-bg"></div><div class="community-content"><div class="section-no">06 / COMMUNITY</div><h2>NOT JUST<br>CLOTHING.<br><em>A MOVEMENT.</em></h2><p>加入 OSC 社群，接收 DROP、活動、合作企劃與會員限定內容。</p><div class="community-actions"><button type="button" class="lime-btn" data-join-community>JOIN OSC COMMUNITY →</button><a href="#" class="text-link">Instagram ↗</a><a href="#" class="text-link">Threads ↗</a><a href="#" class="text-link">Strava ↗</a></div></div>
-</section>
 
-<section class="newsletter" id="newsletter"><div class="section-no">07 / STAY IN MOTION</div><h2>加入這條線。</h2><p>留下 Email，第一時間收到新品 DROP、活動與 OSC Community 消息。</p><form id="newsletterForm"><input id="emailInput" type="email" placeholder="你的 Email / EMAIL ADDRESS" required><button type="submit">加入社群 →</button></form><small id="newsletterMsg"></small></section>
-</main>
+  <!-- SHOPPING BAG -->
+  <aside class="drawer" id="bagDrawer" aria-hidden="true">
 
-<footer><div class="footer-logo"><img src="assets/logo-transparent.png" alt="ONE STROKE CLUB"><p>KEEP THE LINE MOVING.</p></div><div><small>EXPLORE</small><a href="#shop">商品</a><a href="#story">品牌故事</a><a href="#news">最新消息</a><a href="#lookbook">Lookbook</a><a href="#membership">會員方案</a></div><div><small>MY OSC</small><button data-account>我的資料</button><button data-wishlist>收藏清單</button><button id="footerListBtn">我的清單</button><button id="footerOrdersBtn">我的訂單</button></div><div><small>CONNECT</small><a href="#">Instagram ↗</a><a href="#">Threads ↗</a><a href="#">Strava ↗</a><a href="mailto:onestroketw@gmail.com">onestroketw@gmail.com</a></div><div class="footer-bottom"><span>© 2026 ONE STROKE CLUB™</span><span>TAIWAN / TWD / 繁體中文</span></div></footer>
+    <div class="drawer-head">
+      <strong>YOUR BAG / 購物袋</strong>
+      <button data-close-drawer>關閉 ×</button>
+    </div>
 
-<div class="account-center" id="accountCenter" aria-hidden="true">
-  <div class="account-center-card">
-    <button class="modal-close" id="accountClose" aria-label="關閉">×</button>
-    <aside class="account-side">
-      <span class="eyebrow">ONE STROKE CLUB</span><h2 id="accountTitle">MY OSC</h2>
-      <div class="account-user"><strong id="accountName">OSC MEMBER</strong><span id="accountEmail">登入／註冊以開啟會員中心</span></div>
-      <nav id="accountNav"><button data-view="overview">總覽</button><button data-view="points">購物里程</button><button data-view="wishlist">收藏清單</button><button data-view="list">我的清單</button><button data-view="orders">我的訂單</button><button data-view="data">我的資料</button><button data-view="notifications">通知中心</button></nav>
-      <div class="member-level"><span id="memberLevel">OSC MEMBER</span><b><span id="memberPoints">0</span> PTS</b></div>
-    </aside>
-    <section class="account-main"><div class="coupon-card" id="couponBox"></div><div id="accountContent"></div></section>
-  </div>
-</div>
-<div class="auth-modal" id="authModal" aria-hidden="true">
-  <div class="auth-card auth-flow-card">
-    <button class="modal-close" id="authClose">×</button>
-    <div class="auth-brand"><img src="assets/logo-transparent.png" alt="ONE STROKE CLUB"><span>OSC MEMBER / TAIWAN</span></div>
-    <div class="auth-progress"><span class="auth-step active" data-step-dot="1">01</span><i></i><span class="auth-step" data-step-dot="2">02</span><i></i><span class="auth-step" data-step-dot="3">03</span></div>
-    <section class="auth-step-panel active" data-auth-panel="1">
-      <div class="auth-tabs"><button data-auth-mode="login">登入</button><button data-auth-mode="register" class="active">註冊會員</button></div>
-      <p id="authHint">建立 OSC 會員，完成簡單的偏好問答，立即獲得 NT$200 新會員折價券。</p>
-      <form id="authForm" data-mode="register">
-        <div class="auth-field-grid"><label id="authNameField">姓名<input id="authName" type="text" placeholder="你的姓名" autocomplete="name"></label><label>Email<input id="authEmail" type="email" placeholder="name@example.com" autocomplete="email" required></label></div>
-        <label>密碼<input id="authPassword" type="password" minlength="8" placeholder="至少 8 碼，建議包含英數字" autocomplete="new-password" required></label>
-        <div class="password-meter"><span id="passwordMeterBar"></span><small id="passwordMeterText">密碼強度</small></div>
-        <label class="terms-check"><input id="authTerms" type="checkbox" required><span>我同意 OSC 會員條款、隱私政策，並願意接收新品與活動通知。</span></label>
-        <button class="black-btn" id="authSubmit" type="submit">下一步 →</button>
+    <div class="drawer-body" id="bagItems">
+      <p class="empty">
+        購物袋目前是空的。<br>
+        挑一件單品，開始你的下一段移動。
+      </p>
+    </div>
+
+    <div class="drawer-foot">
+
+      <div>
+        <span>小計</span>
+        <strong id="bagTotal">NT$ 0</strong>
+      </div>
+
+      <button class="black-btn" id="checkoutBtn">
+        前往結帳 →
+      </button>
+
+      <small>台灣地區｜NT$ 計價</small>
+
+    </div>
+  </aside>
+
+
+  <!-- ACCOUNT DRAWER -->
+  <aside
+    class="drawer account-drawer"
+    id="accountDrawer"
+    aria-hidden="true"
+  >
+
+    <div class="drawer-head">
+      <strong>MY OSC / 我的帳戶</strong>
+      <button data-close-drawer>關閉 ×</button>
+    </div>
+
+    <div class="account-hero">
+
+      <span class="eyebrow">OSC MEMBER</span>
+
+      <h2>
+        把每一次移動<br>
+        留在你的軌跡裡。
+      </h2>
+
+      <p>
+        登入後同步收藏、清單、訂單與 DROP 通知。
+      </p>
+
+    </div>
+
+    <button class="black-btn" id="loginBtn">
+      登入 / 註冊
+    </button>
+
+    <div class="account-links">
+
+      <button data-wishlist>
+        ♡ 收藏清單
+        <span id="accountWishCount">0</span>
+      </button>
+
+      <button id="accountListBtn">
+        ＋ 我的清單
+      </button>
+
+      <button id="accountOrdersBtn">
+        ▣ 我的訂單
+      </button>
+
+      <button id="accountDataBtn">
+        ◎ 我的資料
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN -->
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="hero-gridline"></div>
+
+      <div class="hero-meta">
+        <span>OSC / 001</span>
+        <span>TAIWAN · 2026</span>
+      </div>
+
+      <div class="hero-copy">
+
+        <p class="eyebrow">
+          ONE STROKE CLUB® / DROP 001
+        </p>
+
+        <h1>
+          KEEP<br>
+          <em>THE LINE</em><br>
+          MOVING.
+        </h1>
+
+        <div class="hero-bottom">
+
+          <p>
+            不是追著速度跑。<br>
+            是讓自己一直往前。
+          </p>
+
+          <a class="circle-link" href="#shop">
+            探索 DROP 001 ↘
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="hero-art">
+
+        <div class="art-glow"></div>
+
+        <div class="hero-logo-frame">
+          <img
+            src="./assets/shirt-logo.png"
+            alt="ONE STROKE CLUB Logo"
+          >
+        </div>
+
+        <div class="art-label">
+          01 / CONTINUOUS<br>
+          LINE SYSTEM
+        </div>
+
+      </div>
+
+      <div class="hero-scroll">
+        SCROLL <span></span>
+      </div>
+
+    </section>
+
+
+    <!-- TICKER -->
+    <section class="ticker">
+      <div>
+        ONE STROKE CLUB · MOVEMENT · CLOTHING · COMMUNITY ·
+        ONE STROKE CLUB · MOVEMENT · CLOTHING · COMMUNITY ·
+      </div>
+    </section>
+
+
+    <!-- BRAND STORY -->
+    <section class="intro section-pad" id="story">
+
+      <div class="section-no">
+        01 / BRAND STORY
+      </div>
+
+      <div class="intro-copy">
+
+        <h2>
+          一筆，<br>
+          不中斷。
+        </h2>
+
+        <p>
+          ONE STROKE 是一條從起點延伸出去的線。
+          它可以是一次呼吸、一個步伐、一段創作，
+          也可以只是今天比昨天多走了一點。
+        </p>
+
+        <a href="#manifesto">
+          閱讀品牌故事 ↗
+        </a>
+
+      </div>
+
+      <div class="intro-mark">
+        <img
+          src="./assets/logo-badge.png"
+          alt="ONE STROKE CLUB logo badge"
+        >
+      </div>
+
+    </section>
+
+
+    <!-- SHOP -->
+    <section
+      class="shop section-dark section-pad"
+      id="shop"
+    >
+
+      <div class="section-head dark-head">
+
+        <div>
+
+          <div class="section-no">
+            02 / SHOP
+          </div>
+
+          <h2>
+            FEATURED<br>
+            DROP 001
+          </h2>
+
+        </div>
+
+        <div class="shop-tools">
+
+          <button
+            class="filter active"
+            data-filter="all"
+          >
+            全部
+          </button>
+
+          <button
+            class="filter"
+            data-filter="top"
+          >
+            上衣
+          </button>
+
+          <button
+            class="filter"
+            data-filter="bottom"
+          >
+            褲子
+          </button>
+
+          <button
+            class="filter"
+            data-filter="outer"
+          >
+            外套
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+        class="product-grid"
+        id="productGrid"
+      ></div>
+
+    </section>
+
+
+    <!-- MANIFESTO -->
+    <section
+      class="manifesto"
+      id="manifesto"
+    >
+
+      <div class="manifesto-no">
+        OSC / MANIFESTO
+      </div>
+
+      <div class="manifesto-lines">
+        <span>MOVE.</span>
+        <span>DON'T RUSH.</span>
+        <span>DON'T STOP.</span>
+      </div>
+
+      <p>
+        速度不是我們追求的答案。<br>
+        持續，才是。
+      </p>
+
+    </section>
+
+
+    <!-- LOOKBOOK -->
+    <section
+      class="editorial section-pad"
+      id="lookbook"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <div class="section-no">
+            03 / LOOKBOOK
+          </div>
+
+          <h2>
+            THE WORLD<br>
+            AROUND THE LINE
+          </h2>
+
+        </div>
+
+        <p>
+          從城市、運動到日常。<br>
+          OSC 不只是一件衣服，而是穿著它生活的方式。
+        </p>
+
+      </div>
+
+      <div class="editorial-grid">
+
+        <article class="editorial-card large">
+
+          <img
+            src="./assets/product-sheet.png"
+            alt="DROP 001 商品設計"
+          >
+
+          <span>
+            DROP 001 / PRODUCT STUDY
+          </span>
+
+        </article>
+
+        <article class="editorial-card">
+
+          <img
+            src="./assets/brand-elements.png"
+            alt="品牌線條系統"
+          >
+
+          <span>
+            LINE SYSTEM / 001
+          </span>
+
+        </article>
+
+        <article class="editorial-card dark">
+
+          <div class="giant">
+            OSC
+          </div>
+
+          <span>
+            TAIPEI / 2026
+          </span>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- NEWS -->
+    <section
+      class="news section-pad"
+      id="news"
+    >
+
+      <div class="section-no">
+        04 / LATEST NEWS
+      </div>
+
+      <div class="news-list">
+
+        <article>
+
+          <span>
+            08.28.2026 / DROP
+          </span>
+
+          <h3>
+            DROP 001 — 第一段線，正式開始。
+          </h3>
+
+          <a href="#shop">
+            探索商品 ↗
+          </a>
+
+        </article>
+
+        <article>
+
+          <span>
+            COMING SOON / CLUB
+          </span>
+
+          <h3>
+            OSC RUN 001 — 城市夜跑企劃
+          </h3>
+
+          <a href="#community">
+            加入 Community ↗
+          </a>
+
+        </article>
+
+        <article>
+
+          <span>
+            COMING SOON / COLLAB
+          </span>
+
+          <h3>
+            ONE STROKE CLUB × ＿＿＿
+          </h3>
+
+          <a href="#community">
+            即將公開 ↗
+          </a>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- MEMBERSHIP -->
+    <section
+      class="section-pad membership"
+      id="membership"
+    >
+
+      <div class="section-head reveal">
+
+        <div>
+
+          <div class="section-no">
+            05 / MEMBERSHIP
+          </div>
+
+          <h2>
+            選擇你的<br>
+            移動方式。
+          </h2>
+
+        </div>
+
+        <p>
+          一次付費解鎖 OSC PASS 全部特權；
+          同時每一次購物都在累積 PTS，
+          帶你沿著這條線持續升級。
+        </p>
+
+      </div>
+
+
+      <!-- MEMBERSHIP LEVEL -->
+      <div class="tier-line reveal">
+
+        <div class="tier-row" id="tierRow">
+
+          <div
+            class="tier-node"
+            data-level="OSC MEMBER"
+          >
+
+            <span class="section-no">
+              STEP 01
+            </span>
+
+            <b>
+              OSC MEMBER
+            </b>
+
+            <small>
+              0 – 299 PTS
+            </small>
+
+            <p>
+              新會員禮｜生日折扣碼
+            </p>
+
+          </div>
+
+
+          <div
+            class="tier-node"
+            data-level="OSC MEMBER+"
+          >
+
+            <span class="section-no">
+              STEP 02
+            </span>
+
+            <b>
+              OSC MEMBER+
+            </b>
+
+            <small>
+              300 – 999 PTS
+            </small>
+
+            <p>
+              每月精選優惠｜生日禮金
+            </p>
+
+          </div>
+
+
+          <div
+            class="tier-node"
+            data-level="OSC PRO"
+          >
+
+            <span class="section-no">
+              STEP 03
+            </span>
+
+            <b>
+              OSC PRO
+            </b>
+
+            <small>
+              1,000 PTS+
+            </small>
+
+            <p>
+              DROP 優先預購｜限定活動邀請
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="progress">
+          <span id="tierFill"></span>
+        </div>
+
+        <div class="tier-meta">
+
+          <span>
+            目前 <b id="tierPts">0</b> PTS
+          </span>
+
+          <span id="tierNext">
+            再 300 點進入 OSC MEMBER+
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- PASS -->
+      <div class="pass-grid">
+
+        <article class="pass-card reveal">
+
+          <div class="pass-eyebrow">
+            OSC PASS
+          </div>
+
+          <div class="pass-price">
+            <span>$480</span>
+            <s>$980</s>
+          </div>
+
+          <p class="pass-desc">
+            一次付費・終身有效。給日常穿 OSC 的你。
+          </p>
+
+          <button
+            class="black-btn"
+            type="button"
+            data-pass="basic"
+          >
+            加入 OSC PASS →
+          </button>
+
+          <ul class="pass-features">
+
+            <li>全年免運</li>
+            <li>DROP 搶先 24 小時預購</li>
+            <li>生日專屬禮券</li>
+
+            <li class="off">
+              限定商品優先購買資格
+            </li>
+
+            <li class="off">
+              雙倍購物里程 PTS
+            </li>
+
+          </ul>
+
+        </article>
+
+
+        <article class="pass-card featured reveal">
+
+          <span class="pass-tag">
+            BEST VALUE
+          </span>
+
+          <div class="pass-eyebrow">
+            OSC PASS+
+          </div>
+
+          <div class="pass-price">
+            <span>$880</span>
+            <s>$1,980</s>
+          </div>
+
+          <p class="pass-desc">
+            一次付費・終身有效。全部特權一次解鎖。
+          </p>
+
+          <button
+            class="lime-btn"
+            type="button"
+            data-pass="plus"
+          >
+            加入 OSC PASS+ →
+          </button>
+
+          <ul class="pass-features">
+
+            <li>全年免運</li>
+            <li>DROP 搶先 24 小時預購</li>
+            <li>生日專屬禮券</li>
+            <li>限定商品優先購買資格</li>
+            <li>雙倍購物里程 PTS</li>
+
+          </ul>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- COMMUNITY -->
+    <section
+      class="community"
+      id="community"
+    >
+
+      <div class="community-bg"></div>
+
+      <div class="community-content">
+
+        <div class="section-no">
+          06 / COMMUNITY
+        </div>
+
+        <h2>
+          NOT JUST<br>
+          CLOTHING.<br>
+          <em>A MOVEMENT.</em>
+        </h2>
+
+        <p>
+          加入 OSC 社群，接收 DROP、活動、
+          合作企劃與會員限定內容。
+        </p>
+
+        <div class="community-actions">
+
+          <button
+            type="button"
+            class="lime-btn"
+            data-join-community
+          >
+            JOIN OSC COMMUNITY →
+          </button>
+
+          <a
+            href="#"
+            class="text-link"
+          >
+            Instagram ↗
+          </a>
+
+          <a
+            href="#"
+            class="text-link"
+          >
+            Threads ↗
+          </a>
+
+          <a
+            href="#"
+            class="text-link"
+          >
+            Strava ↗
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- NEWSLETTER -->
+    <section
+      class="newsletter"
+      id="newsletter"
+    >
+
+      <div class="section-no">
+        07 / STAY IN MOTION
+      </div>
+
+      <h2>
+        加入這條線。
+      </h2>
+
+      <p>
+        留下 Email，第一時間收到新品 DROP、
+        活動與 OSC Community 消息。
+      </p>
+
+      <form id="newsletterForm">
+
+        <input
+          id="emailInput"
+          type="email"
+          placeholder="你的 Email / EMAIL ADDRESS"
+          required
+        >
+
+        <button type="submit">
+          加入社群 →
+        </button>
+
       </form>
-      <small>註冊不會立即完成付款；我們會先建立會員資料，再進行偏好問答與 Email 驗證。</small>
-    </section>
-    <section class="auth-step-panel" data-auth-panel="2">
-      <span class="eyebrow">02 / YOUR MOVEMENT</span><h3>讓 OSC 更懂你。</h3><p>這些問題不是考試，只是幫我們了解你從哪裡認識 OSC，以及你想看到什麼。</p>
-      <form id="profileQuizForm">
-        <label>你從哪裡知道 ONE STROKE CLUB？<select id="heardFrom" required><option value="">請選擇</option><option>Instagram</option><option>Threads</option><option>朋友推薦</option><option>活動／市集</option><option>搜尋引擎</option><option>其他</option></select></label>
-        <label>你最感興趣的內容？<select id="interest" required><option value="">請選擇</option><option>服飾與 DROP</option><option>運動與跑步</option><option>品牌故事與創作</option><option>社群活動</option><option>合作企劃</option></select></label>
-        <label>你平常的穿著尺寸？<select id="preferredSize" required><option value="">請選擇</option><option>S</option><option>M</option><option>L</option><option>XL</option></select></label>
-        <button class="black-btn" type="submit">完成問答 →</button>
-      </form>
-    </section>
-    <section class="auth-step-panel" data-auth-panel="3">
-      <span class="eyebrow">03 / WELCOME TO OSC</span><h3>最後一步。</h3><p id="verificationText">我們會將歡迎信與 Email 驗證資訊寄到你的信箱。</p>
-      <div class="verification-box"><span>驗證 Email</span><strong id="verificationEmail">—</strong><small id="verificationStatus">等待寄送…</small></div>
-      <label class="verification-input">六位數驗證碼<input id="verificationCodeInput" inputmode="numeric" maxlength="6" placeholder="請輸入 Email 驗證碼"></label>
-      <button class="black-btn" id="verifyDemoBtn" type="button">驗證並進入 MY OSC</button>
-      <button class="outline-btn full-btn" id="resendWelcomeBtn" type="button">重新寄送歡迎信</button>
-      <small class="email-note">正式上線時請接上 EmailJS / Resend / Supabase Auth，即可由伺服器或寄信服務實際寄送郵件。目前靜態版會建立完整寄信 payload 與寄送入口。</small>
-    </section>
-  </div>
-</div>
-<div class="modal" id="productModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" data-close-modal>×</button><div class="modal-product"><div class="modal-visual"><img id="modalProductImg" src="assets/product-sheet.png" alt=""><img class="modal-logo-mark" src="assets/shirt-logo.png" alt="ONE STROKE CLUB Logo"></div><div class="modal-copy"><span id="modalCategory" class="eyebrow"></span><h2 id="modalProductName"></h2><strong id="modalProductPrice"></strong><p id="modalProductDesc"></p><div class="size-row" id="modalSizes"></div><button class="black-btn" id="modalAdd">加入購物袋 →</button><div class="accordion"><button data-acc="details">DETAILS <span>＋</span></button><div data-panel="details"></div><button data-acc="fit">FIT INFO <span>＋</span></button><div data-panel="fit"></div><button data-acc="shipping">SHIPPING <span>＋</span></button><div data-panel="shipping"></div><button data-acc="care">CARE <span>＋</span></button><div data-panel="care"></div></div></div></div></div></div>
 
-<div class="checkout-modal" id="checkoutModal" aria-hidden="true">
-  <div class="checkout-card">
-    <button class="modal-close" id="checkoutClose">×</button>
-    <span class="eyebrow">CHECKOUT / 結帳</span><h2>最後一步，<br>繼續往前。</h2>
-    <div class="checkout-summary" id="checkoutSummary"></div>
-    <label class="coupon-input">會員優惠序號<input id="couponCode" type="text" placeholder="例如 OSC200" autocomplete="off"><button type="button" id="applyCouponBtn">套用</button></label>
-    <small id="couponMsg" class="coupon-msg">新會員券：OSC200｜單筆滿 NT$1,000 折 NT$200</small>
-    <div class="checkout-total"><span>應付金額</span><strong id="checkoutTotal">NT$ 0</strong></div>
-    <button class="black-btn" id="placeOrderBtn">確認訂單 →</button>
-    <p class="checkout-note">台灣地區｜NT$ 計價。這是前端示範結帳流程，正式上線時可串接金流與物流。</p>
+      <small id="newsletterMsg"></small>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+
+    <div class="footer-logo">
+
+      <img
+        src="./assets/logo-transparent.png"
+        alt="ONE STROKE CLUB"
+      >
+
+      <p>
+        KEEP THE LINE MOVING.
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <small>EXPLORE</small>
+
+      <a href="#shop">商品</a>
+      <a href="#story">品牌故事</a>
+      <a href="#news">最新消息</a>
+      <a href="#lookbook">Lookbook</a>
+      <a href="#membership">會員方案</a>
+
+    </div>
+
+
+    <div>
+
+      <small>MY OSC</small>
+
+      <button data-account>
+        我的資料
+      </button>
+
+      <button data-wishlist>
+        收藏清單
+      </button>
+
+      <button id="footerListBtn">
+        我的清單
+      </button>
+
+      <button id="footerOrdersBtn">
+        我的訂單
+      </button>
+
+    </div>
+
+
+    <div>
+
+      <small>CONNECT</small>
+
+      <a href="#">
+        Instagram ↗
+      </a>
+
+      <a href="#">
+        Threads ↗
+      </a>
+
+      <a href="#">
+        Strava ↗
+      </a>
+
+      <a href="mailto:onestroketw@gmail.com">
+        onestroketw@gmail.com
+      </a>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+      <span>
+        © 2026 ONE STROKE CLUB™
+      </span>
+
+      <span>
+        TAIWAN / TWD / 繁體中文
+      </span>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ACCOUNT CENTER -->
+  <div
+    class="account-center"
+    id="accountCenter"
+    aria-hidden="true"
+  >
+
+    <div class="account-center-card">
+
+      <button
+        class="modal-close"
+        id="accountClose"
+        aria-label="關閉"
+      >
+        ×
+      </button>
+
+
+      <aside class="account-side">
+
+        <span class="eyebrow">
+          ONE STROKE CLUB
+        </span>
+
+        <h2 id="accountTitle">
+          MY OSC
+        </h2>
+
+        <div class="account-user">
+
+          <strong id="accountName">
+            OSC MEMBER
+          </strong>
+
+          <span id="accountEmail">
+            登入／註冊以開啟會員中心
+          </span>
+
+        </div>
+
+        <nav id="accountNav">
+
+          <button data-view="overview">
+            總覽
+          </button>
+
+          <button data-view="points">
+            購物里程
+          </button>
+
+          <button data-view="wishlist">
+            收藏清單
+          </button>
+
+          <button data-view="list">
+            我的清單
+          </button>
+
+          <button data-view="orders">
+            我的訂單
+          </button>
+
+          <button data-view="data">
+            我的資料
+          </button>
+
+          <button data-view="notifications">
+            通知中心
+          </button>
+
+        </nav>
+
+        <div class="member-level">
+
+          <span id="memberLevel">
+            OSC MEMBER
+          </span>
+
+          <b>
+            <span id="memberPoints">0</span>
+            PTS
+          </b>
+
+        </div>
+
+      </aside>
+
+
+      <section class="account-main">
+
+        <div
+          class="coupon-card"
+          id="couponBox"
+        ></div>
+
+        <div id="accountContent"></div>
+
+      </section>
+
+    </div>
+
   </div>
-</div>
-<div class="toast" id="toast"></div>
-<div class="mobile-shopbar"><div><small id="mobileProductName">DROP 001</small><strong id="mobileProductPrice">NT$ 1,680</strong></div><button id="mobileShopBtn">SHOP NOW →</button></div>
+
+
+  <!-- AUTH MODAL -->
+  <div
+    class="auth-modal"
+    id="authModal"
+    aria-hidden="true"
+  >
+
+    <div class="auth-card auth-flow-card">
+
+      <button
+        class="modal-close"
+        id="authClose"
+      >
+        ×
+      </button>
+
+
+      <div class="auth-brand">
+
+        <img
+          src="./assets/logo-transparent.png"
+          alt="ONE STROKE CLUB"
+        >
+
+        <span>
+          OSC MEMBER / TAIWAN
+        </span>
+
+      </div>
+
+
+      <div class="auth-progress">
+
+        <span
+          class="auth-step active"
+          data-step-dot="1"
+        >
+          01
+        </span>
+
+        <i></i>
+
+        <span
+          class="auth-step"
+          data-step-dot="2"
+        >
+          02
+        </span>
+
+        <i></i>
+
+        <span
+          class="auth-step"
+          data-step-dot="3"
+        >
+          03
+        </span>
+
+      </div>
+
+
+      <!-- AUTH STEP 1 -->
+      <section
+        class="auth-step-panel active"
+        data-auth-panel="1"
+      >
+
+        <div class="auth-tabs">
+
+          <button data-auth-mode="login">
+            登入
+          </button>
+
+          <button
+            data-auth-mode="register"
+            class="active"
+          >
+            註冊會員
+          </button>
+
+        </div>
+
+
+        <p id="authHint">
+          建立 OSC 會員，完成簡單的偏好問答，
+          立即獲得 NT$200 新會員折價券。
+        </p>
+
+
+        <form
+          id="authForm"
+          data-mode="register"
+        >
+
+          <div class="auth-field-grid">
+
+            <label id="authNameField">
+              姓名
+
+              <input
+                id="authName"
+                type="text"
+                placeholder="你的姓名"
+                autocomplete="name"
+              >
+
+            </label>
+
+
+            <label>
+              Email
+
+              <input
+                id="authEmail"
+                type="email"
+                placeholder="name@example.com"
+                autocomplete="email"
+                required
+              >
+
+            </label>
+
+          </div>
+
+
+          <label>
+            密碼
+
+            <input
+              id="authPassword"
+              type="password"
+              minlength="8"
+              placeholder="至少 8 碼，建議包含英數字"
+              autocomplete="new-password"
+              required
+            >
+
+          </label>
+
+
+          <div class="password-meter">
+
+            <span id="passwordMeterBar"></span>
+
+            <small id="passwordMeterText">
+              密碼強度
+            </small>
+
+          </div>
+
+
+          <label class="terms-check">
+
+            <input
+              id="authTerms"
+              type="checkbox"
+              required
+            >
+
+            <span>
+              我同意 OSC 會員條款、隱私政策，
+              並願意接收新品與活動通知。
+            </span>
+
+          </label>
+
+
+          <button
+            class="black-btn"
+            id="authSubmit"
+            type="submit"
+          >
+            下一步 →
+          </button>
+
+        </form>
+
+
+        <small>
+          註冊不會立即完成付款；
+          我們會先建立會員資料，再進行偏好問答與 Email 驗證。
+        </small>
+
+      </section>
+
+
+      <!-- AUTH STEP 2 -->
+      <section
+        class="auth-step-panel"
+        data-auth-panel="2"
+      >
+
+        <span class="eyebrow">
+          02 / YOUR MOVEMENT
+        </span>
+
+        <h3>
+          讓 OSC 更懂你。
+        </h3>
+
+        <p>
+          這些問題不是考試，只是幫我們了解你
+          從哪裡認識 OSC，以及你想看到什麼。
+        </p>
+
+
+        <form id="profileQuizForm">
+
+          <label>
+            你從哪裡知道 ONE STROKE CLUB？
+
+            <select id="heardFrom" required>
+
+              <option value="">
+                請選擇
+              </option>
+
+              <option>Instagram</option>
+              <option>Threads</option>
+              <option>朋友推薦</option>
+              <option>活動／市集</option>
+              <option>搜尋引擎</option>
+              <option>其他</option>
+
+            </select>
+
+          </label>
+
+
+          <label>
+            你最感興趣的內容？
+
+            <select id="interest" required>
+
+              <option value="">
+                請選擇
+              </option>
+
+              <option>服飾與 DROP</option>
+              <option>運動與跑步</option>
+              <option>品牌故事與創作</option>
+              <option>社群活動</option>
+              <option>合作企劃</option>
+
+            </select>
+
+          </label>
+
+
+          <label>
+            你平常的穿著尺寸？
+
+            <select
+              id="preferredSize"
+              required
+            >
+
+              <option value="">
+                請選擇
+              </option>
+
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+
+            </select>
+
+          </label>
+
+
+          <button
+            class="black-btn"
+            type="submit"
+          >
+            完成問答 →
+          </button>
+
+        </form>
+
+      </section>
+
+
+      <!-- AUTH STEP 3 -->
+      <section
+        class="auth-step-panel"
+        data-auth-panel="3"
+      >
+
+        <span class="eyebrow">
+          03 / WELCOME TO OSC
+        </span>
+
+        <h3>
+          最後一步。
+        </h3>
+
+        <p id="verificationText">
+          我們會將歡迎信與 Email 驗證資訊寄到你的信箱。
+        </p>
+
+
+        <div class="verification-box">
+
+          <span>
+            驗證 Email
+          </span>
+
+          <strong id="verificationEmail">
+            —
+          </strong>
+
+          <small id="verificationStatus">
+            等待寄送…
+          </small>
+
+        </div>
+
+
+        <label class="verification-input">
+
+          六位數驗證碼
+
+          <input
+            id="verificationCodeInput"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="請輸入 Email 驗證碼"
+          >
+
+        </label>
+
+
+        <button
+          class="black-btn"
+          id="verifyDemoBtn"
+          type="button"
+        >
+          驗證並進入 MY OSC
+        </button>
+
+
+        <button
+          class="outline-btn full-btn"
+          id="resendWelcomeBtn"
+          type="button"
+        >
+          重新寄送歡迎信
+        </button>
+
+
+        <small class="email-note">
+          正式上線時請接上 EmailJS / Resend / Supabase Auth，
+          即可由伺服器或寄信服務實際寄送郵件。
+          目前靜態版會建立完整寄信 payload 與寄送入口。
+        </small>
+
+      </section>
+
+    </div>
+
+  </div>
+
+
+  <!-- PRODUCT MODAL -->
+  <div
+    class="modal"
+    id="productModal"
+    aria-hidden="true"
+  >
+
+    <div class="modal-card">
+
+      <button
+        class="modal-close"
+        data-close-modal
+      >
+        ×
+      </button>
+
+
+      <div class="modal-product">
+
+        <div class="modal-visual">
+
+          <img
+            id="modalProductImg"
+            src="./assets/product-sheet.png"
+            alt=""
+          >
+
+          <img
+            class="modal-logo-mark"
+            src="./assets/shirt-logo.png"
+            alt="ONE STROKE CLUB Logo"
+          >
+
+        </div>
+
+
+        <div class="modal-copy">
+
+          <span
+            id="modalCategory"
+            class="eyebrow"
+          ></span>
+
+          <h2 id="modalProductName"></h2>
+
+          <strong id="modalProductPrice"></strong>
+
+          <p id="modalProductDesc"></p>
+
+          <div
+            class="size-row"
+            id="modalSizes"
+          ></div>
+
+
+          <button
+            class="black-btn"
+            id="modalAdd"
+          >
+            加入購物袋 →
+          </button>
+
+
+          <div class="accordion">
+
+            <button data-acc="details">
+              DETAILS <span>＋</span>
+            </button>
+
+            <div data-panel="details"></div>
+
+
+            <button data-acc="fit">
+              FIT INFO <span>＋</span>
+            </button>
+
+            <div data-panel="fit"></div>
+
+
+            <button data-acc="shipping">
+              SHIPPING <span>＋</span>
+            </button>
+
+            <div data-panel="shipping"></div>
+
+
+            <button data-acc="care">
+              CARE <span>＋</span>
+            </button>
+
+            <div data-panel="care"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- CHECKOUT -->
+  <div
+    class="checkout-modal"
+    id="checkoutModal"
+    aria-hidden="true"
+  >
+
+    <div class="checkout-card">
+
+      <button
+        class="modal-close"
+        id="checkoutClose"
+      >
+        ×
+      </button>
+
+      <span class="eyebrow">
+        CHECKOUT / 結帳
+      </span>
+
+      <h2>
+        最後一步，<br>
+        繼續往前。
+      </h2>
+
+
+      <div
+        class="checkout-summary"
+        id="checkoutSummary"
+      ></div>
+
+
+      <label class="coupon-input">
+
+        會員優惠序號
+
+        <input
+          id="couponCode"
+          type="text"
+          placeholder="例如 OSC200"
+          autocomplete="off"
+        >
+
+        <button
+          type="button"
+          id="applyCouponBtn"
+        >
+          套用
+        </button>
+
+      </label>
+
+
+      <small
+        id="couponMsg"
+        class="coupon-msg"
+      >
+        新會員券：OSC200｜單筆滿 NT$1,000 折 NT$200
+      </small>
+
+
+      <div class="checkout-total">
+
+        <span>
+          應付金額
+        </span>
+
+        <strong id="checkoutTotal">
+          NT$ 0
+        </strong>
+
+      </div>
+
+
+      <button
+        class="black-btn"
+        id="placeOrderBtn"
+      >
+        確認訂單 →
+      </button>
+
+
+      <p class="checkout-note">
+        台灣地區｜NT$ 計價。
+        這是前端示範結帳流程，正式上線時可串接金流與物流。
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- TOAST -->
+  <div
+    class="toast"
+    id="toast"
+  ></div>
+
+
+  <!-- MOBILE SHOP BAR -->
+  <div class="mobile-shopbar">
+
+    <div>
+
+      <small id="mobileProductName">
+        DROP 001
+      </small>
+
+      <strong id="mobileProductPrice">
+        NT$ 1,680
+      </strong>
+
+    </div>
+
+    <button id="mobileShopBtn">
+      SHOP NOW →
+    </button>
+
+  </div>
+
 </body>
 </html>
