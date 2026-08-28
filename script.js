@@ -1,3 +1,44 @@
+// ========================================
+// ONE STROKE CLUB × SUPABASE
+// ========================================
+
+const supabaseClient = window.supabase.createClient(
+  window.OSC_SUPABASE_URL,
+  window.OSC_SUPABASE_ANON_KEY
+);
+
+let currentUser = null;
+
+// 檢查目前登入狀態
+async function initSupabaseAuth() {
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error) {
+    console.error("Supabase Auth Error:", error);
+    return;
+  }
+
+  currentUser = data.session?.user ?? null;
+
+  if (currentUser) {
+    console.log("ONE STROKE CLUB 登入會員:", currentUser.email);
+  } else {
+    console.log("目前尚未登入");
+  }
+}
+
+// 監聽登入 / 登出
+supabaseClient.auth.onAuthStateChange((_event, session) => {
+  currentUser = session?.user ?? null;
+
+  console.log(
+    currentUser
+      ? `會員已登入：${currentUser.email}`
+      : "會員已登出"
+  );
+});
+
+initSupabaseAuth();
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 // ---- scroll reveal ----
