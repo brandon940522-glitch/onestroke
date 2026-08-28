@@ -4,7 +4,7 @@ const products = [
   {id:3,name:'STATEMENT TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:1880,tag:'DROP 001',desc:'實心主 Logo，背面大型 ONE STROKE CLUB 直向排列。最強烈的一件。',details:'260g 厚磅棉｜正反面品牌圖像｜寬肩版型｜DROP 001',fit:'Regular Relaxed。版型挺、肩線略落。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗，避免漂白與高溫。'}
 ];
 const futureCategories={bottom:'褲子',outer:'外套',accessory:'配件'};
-const productImg='product-sheet.png', officialShirtLogo='assets/shirt-logo-official.png';
+const productImg='product-sheet.png', officialShirtLogo='shirt-logo-official.png';
 const SUPABASE_URL = window.OSC_SUPABASE_URL || 'YOUR_SUPABASE_URL';
 const SUPABASE_ANON_KEY = window.OSC_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
 const supabaseReady = SUPABASE_URL.startsWith('https://') && !SUPABASE_ANON_KEY.startsWith('YOUR_') && !!window.supabase;
@@ -145,73 +145,3 @@ document.addEventListener('submit',e=>{if(e.target.id==='profileForm')saveProfil
 let lastY=scrollY;addEventListener('scroll',()=>{const h=$('#siteHeader');if(scrollY>120&&scrollY>lastY)h.classList.add('hidden');else h.classList.remove('hidden');lastY=scrollY},{passive:true});addEventListener('mousemove',e=>{const c=$('.cursor-dot');if(c){c.style.left=e.clientX+'px';c.style.top=e.clientY+'px'}});$$('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{hideDrawers();if(a.closest('#menuOverlay'))toggleMenu(false)}));
 
 if(supabaseReady){sb.auth.onAuthStateChange(async(event,session)=>{if(session?.user)await hydrateUser(session.user);else if(event==='SIGNED_OUT')await refreshUser()});refreshUser()}else{console.warn('[OSC] Supabase 尚未設定：請填入 OSC_SUPABASE_URL / OSC_SUPABASE_ANON_KEY。會員資料不會再以 localStorage 模擬。')}
-
-/* ===== MEMBERSHIP / 會員方案：PTS 階梯 + OSC PASS 卡片游標聚焦 ===== */
-(function(){
-  const TIER_ORDER = ['OSC MEMBER', 'OSC MEMBER+', 'OSC PRO'];
-
-  function renderMembershipTier(){
-    const ptsEl = $('#memberPoints'), levelEl = $('#memberLevel');
-    const pts = ptsEl ? Number((ptsEl.textContent || '0').replace(/[^0-9]/g, '')) || 0 : 0;
-    const level = (levelEl && levelEl.textContent.trim()) || (pts >= 1000 ? 'OSC PRO' : pts >= 300 ? 'OSC MEMBER+' : 'OSC MEMBER');
-    let idx = TIER_ORDER.indexOf(level); if (idx < 0) idx = 0;
-
-    $$('.tier-node').forEach((n, i) => n.classList.toggle('reached', i <= idx));
-
-    const fill = $('#tierFill'); if (fill) fill.style.width = Math.min(pts / 1000 * 100, 100) + '%';
-    const ptsLabel = $('#tierPts'); if (ptsLabel) ptsLabel.textContent = pts.toLocaleString('zh-TW');
-
-    const nextLabel = $('#tierNext');
-    if (nextLabel) {
-      if (idx >= TIER_ORDER.length - 1) {
-        nextLabel.textContent = '已達最高等級 · OSC PRO';
-      } else {
-        const nextThreshold = idx === 0 ? 300 : 1000;
-        nextLabel.textContent = '再 ' + Math.max(0, nextThreshold - pts).toLocaleString('zh-TW') + ' 點進入 ' + TIER_ORDER[idx + 1];
-      }
-    }
-  }
-  renderMembershipTier();
-  let lastPtsText = $('#memberPoints') ? $('#memberPoints').textContent : '';
-  setInterval(() => {
-    const cur = $('#memberPoints') ? $('#memberPoints').textContent : '';
-    if (cur !== lastPtsText) { lastPtsText = cur; renderMembershipTier(); }
-  }, 1500);
-
-  // OSC PASS 卡片：游標聚焦光暈 + 放大既有的全域 cursor-dot
-  const cursorDot = $('.cursor-dot');
-  $$('.pass-card').forEach(card => {
-    card.addEventListener('pointermove', e => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--sx', (e.clientX - r.left) + 'px');
-      card.style.setProperty('--sy', (e.clientY - r.top) + 'px');
-    });
-    card.addEventListener('pointerenter', () => { if (cursorDot) cursorDot.classList.add('is-focus'); });
-    card.addEventListener('pointerleave', () => {
-      card.style.setProperty('--sx', '-999px');
-      card.style.setProperty('--sy', '-999px');
-      if (cursorDot) cursorDot.classList.remove('is-focus');
-    });
-  });
-
-  // 加入 PASS：沿用既有登入／會員中心流程
-  $$('[data-pass]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const loginBtn = $('#loginBtn');
-      if (loginBtn) loginBtn.click(); else $('#accountBtn')?.click();
-    });
-  });
-
-  // 滾動淡入
-  const revealEls = $$('.membership .reveal');
-  if (revealEls.length && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
-      });
-    }, { threshold: 0.25 });
-    revealEls.forEach(el => io.observe(el));
-  } else {
-    revealEls.forEach(el => el.classList.add('in'));
-  }
-})();
