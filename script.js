@@ -1,7 +1,7 @@
 const products = [
-  {id:1,name:'ONE STROKE TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:490,tag:'DROP 001',desc:'左胸主 Logo，右袖波浪線。厚磅純棉、落肩剪裁，從日常到移動都能穿。',details:'240g 厚磅純棉｜寬鬆落肩｜ONE STROKE 線條印刷｜台灣設計',fit:'Relaxed Fit。建議依平常尺寸選擇；喜歡更寬鬆可選大一碼。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗滌，避免長時間烘乾與直接高溫熨燙。'},
-  {id:2,name:'LINE HOODIE',category:'top',categoryLabel:'上衣 / HOODIE',price:490,tag:'DROP 001',desc:'領口 ONE STROKE CLUB，中間直向波浪線。Minimal / Essential 定位。',details:'420g 棉混紡｜落肩｜雙層帽｜袖口羅紋｜LINE GRAPHIC',fit:'Relaxed / Oversized。適合秋冬層次穿搭。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'反面冷水洗，低溫烘乾或自然陰乾。'},
-  {id:3,name:'STATEMENT TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:490,tag:'DROP 001',desc:'實心主 Logo，背面大型 ONE STROKE CLUB 直向排列。最強烈的一件。',details:'260g 厚磅棉｜正反面品牌圖像｜寬肩版型｜DROP 001',fit:'Regular Relaxed。版型挺、肩線略落。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗，避免漂白與高溫。'}
+  {id:1,name:'ONE STROKE TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:1680,tag:'DROP 001',desc:'左胸主 Logo，右袖波浪線。厚磅純棉、落肩剪裁，從日常到移動都能穿。',details:'240g 厚磅純棉｜寬鬆落肩｜ONE STROKE 線條印刷｜台灣設計',fit:'Relaxed Fit。建議依平常尺寸選擇；喜歡更寬鬆可選大一碼。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗滌，避免長時間烘乾與直接高溫熨燙。'},
+  {id:2,name:'LINE HOODIE',category:'top',categoryLabel:'上衣 / HOODIE',price:2980,tag:'DROP 001',desc:'領口 ONE STROKE CLUB，中間直向波浪線。Minimal / Essential 定位。',details:'420g 棉混紡｜落肩｜雙層帽｜袖口羅紋｜LINE GRAPHIC',fit:'Relaxed / Oversized。適合秋冬層次穿搭。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'反面冷水洗，低溫烘乾或自然陰乾。'},
+  {id:3,name:'STATEMENT TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:1880,tag:'DROP 001',desc:'實心主 Logo，背面大型 ONE STROKE CLUB 直向排列。最強烈的一件。',details:'260g 厚磅棉｜正反面品牌圖像｜寬肩版型｜DROP 001',fit:'Regular Relaxed。版型挺、肩線略落。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗，避免漂白與高溫。'}
 ];
 const futureCategories={bottom:'褲子',outer:'外套',accessory:'配件'};
 const productImg='product-sheet.png', officialShirtLogo='shirt-logo-official.png';
@@ -143,5 +143,26 @@ $('#loginBtn').addEventListener('click',()=>authOpen(currentUser?'login':'regist
 $('#accountClose').addEventListener('click',closeAccount);$('#accountContent').addEventListener('click',e=>{const view=e.target.closest('[data-account-view]');if(view){activeAccountView=view.dataset.accountView;renderAccount();return}const prod=e.target.closest('[data-account-product]');if(prod){closeAccount();openProduct(prod.dataset.accountProduct)}if(e.target.closest('[data-account-shop]')){closeAccount();document.querySelector('#shop').scrollIntoView({behavior:'smooth'})}if(e.target.closest('#centerLoginBtn'))authOpen('register');if(e.target.closest('#logoutBtn'))logout();if(e.target.closest('#newListBtn'))showToast('清單功能已建立資料架構，下一階段可做成自訂清單。')});$('#accountNav').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(!b)return;activeAccountView=b.dataset.view;renderAccount()});
 document.addEventListener('submit',e=>{if(e.target.id==='profileForm')saveProfile(e)});$('#authModal').addEventListener('click',e=>{if(e.target.id==='authModal')authClose()});$('#accountCenter').addEventListener('click',e=>{if(e.target.id==='accountCenter')closeAccount()});$('#checkoutModal').addEventListener('click',e=>{if(e.target.id==='checkoutModal'){e.currentTarget.classList.remove('open');document.body.classList.remove('modal-open')}});
 let lastY=scrollY;addEventListener('scroll',()=>{const h=$('#siteHeader');if(scrollY>120&&scrollY>lastY)h.classList.add('hidden');else h.classList.remove('hidden');lastY=scrollY},{passive:true});addEventListener('mousemove',e=>{const c=$('.cursor-dot');if(c){c.style.left=e.clientX+'px';c.style.top=e.clientY+'px'}});$$('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{hideDrawers();if(a.closest('#menuOverlay'))toggleMenu(false)}));
+
+/* ===== REVEAL ON SCROLL：讓 .reveal 元素（會員方案區塊）滾動到畫面內時淡入顯示 ===== */
+function initRevealAnimations(){
+  const revealEls = $$('.reveal');
+  if(!revealEls.length) return;
+  if(!('IntersectionObserver' in window)){
+    // 不支援 IntersectionObserver 的舊瀏覽器：直接全部顯示，避免內容永遠隱藏
+    revealEls.forEach(el=>el.classList.add('in'));
+    return;
+  }
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.15, rootMargin:'0px 0px -8% 0px'});
+  revealEls.forEach(el=>observer.observe(el));
+}
+initRevealAnimations();
 
 if(supabaseReady){sb.auth.onAuthStateChange(async(event,session)=>{if(session?.user)await hydrateUser(session.user);else if(event==='SIGNED_OUT')await refreshUser()});refreshUser()}else{console.warn('[OSC] Supabase 尚未設定：請填入 OSC_SUPABASE_URL / OSC_SUPABASE_ANON_KEY。會員資料不會再以 localStorage 模擬。')}
