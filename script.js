@@ -4,7 +4,7 @@ const products = [
   {id:3,name:'STATEMENT TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:1880,tag:'DROP 001',desc:'實心主 Logo，背面大型 ONE STROKE CLUB 直向排列。最強烈的一件。',details:'260g 厚磅棉｜正反面品牌圖像｜寬肩版型｜DROP 001',fit:'Regular Relaxed。版型挺、肩線略落。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗，避免漂白與高溫。'}
 ];
 const futureCategories={bottom:'褲子',outer:'外套',accessory:'配件'};
-const productImg='assets/product-sheet.png', officialShirtLogo='assets/shirt-logo-official.png';
+const productImg='product-sheet.png', officialShirtLogo='assets/shirt-logo-official.png';
 const SUPABASE_URL = window.OSC_SUPABASE_URL || 'YOUR_SUPABASE_URL';
 const SUPABASE_ANON_KEY = window.OSC_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
 const supabaseReady = SUPABASE_URL.startsWith('https://') && !SUPABASE_ANON_KEY.startsWith('YOUR_') && !!window.supabase;
