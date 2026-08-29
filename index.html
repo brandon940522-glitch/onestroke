@@ -2087,45 +2087,93 @@
       </h2>
 
 
-      <div
-        class="checkout-summary"
-        id="checkoutSummary"
-      ></div>
+      <!-- STEP 1：訂單摘要 + 選擇優惠券 + 建立訂單 -->
+
+      <div id="checkoutStepSummary">
+
+        <div
+          class="checkout-summary"
+          id="checkoutSummary"
+        ></div>
 
 
-           <div class="coupon-select">
-        <span class="coupon-select-label">選擇優惠券</span>
-        <div id="couponList"></div>
+        <div class="coupon-select">
+
+          <span class="coupon-select-label">
+            選擇優惠券
+          </span>
+
+          <div id="couponList"></div>
+
+        </div>
+
+
+        <small
+          id="couponMsg"
+          class="coupon-msg"
+        ></small>
+
+
+        <div class="checkout-total">
+
+          <span>
+            應付金額
+          </span>
+
+          <strong id="checkoutTotal">
+            NT$ 0
+          </strong>
+
+        </div>
+
+
+        <button
+          class="black-btn"
+          id="placeOrderBtn"
+        >
+          確認訂單 →
+        </button>
+
+
+        <p class="checkout-note">
+          台灣地區｜NT$ 計價。
+          這是前端示範結帳流程，正式上線時可串接金流與物流。
+        </p>
+
       </div>
 
-      <small id="couponMsg" class="coupon-msg"></small>
 
+      <!-- STEP 2：訂單已建立，等待付款 -->
 
-      <div class="checkout-total">
+      <div id="checkoutStepPayment" style="display:none">
 
-        <span>
-          應付金額
+        <span class="eyebrow">
+          PAYMENT / 付款
         </span>
 
-        <strong id="checkoutTotal">
-          NT$ 0
-        </strong>
+        <h3>
+          訂單已建立，等待付款。
+        </h3>
+
+        <p>
+          訂單編號 <strong id="paymentOrderNo"></strong><br>
+          應付金額 <strong id="paymentTotal"></strong>
+        </p>
+
+        <button
+          class="black-btn"
+          id="confirmPaymentBtn"
+        >
+          確認完成付款（示範）→
+        </button>
+
+        <p class="checkout-note">
+          這是前端示範付款流程，正式上線時請接上金流服務
+          （如綠界、LINE Pay、Stripe 等），
+          由金流回傳結果後才觸發付款完成、核銷優惠券與發放購物里程。
+        </p>
 
       </div>
-
-
-      <button
-        class="black-btn"
-        id="placeOrderBtn"
-      >
-        確認訂單 →
-      </button>
-
-
-      <p class="checkout-note">
-        台灣地區｜NT$ 計價。
-        這是前端示範結帳流程，正式上線時可串接金流與物流。
-      </p>
 
     </div>
 
