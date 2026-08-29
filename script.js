@@ -12,7 +12,7 @@ const sb = supabaseReady ? window.supabase.createClient(SUPABASE_URL,SUPABASE_AN
 
 let cart=JSON.parse(localStorage.getItem('osc_cart')||'[]');
 let currentUser=null, profile=null, wishlist=[], orders=[], points=0, coupons=[], notifications=[];
-let selectedSize='M',activeProduct=products[0],activeAccountView='overview',authMode='register',registrationDraft=null,appliedCoupon=null;
+let selectedSize='M',activeProduct=products[0],activeAccountView='overview',authMode='register',registrationDraft=null,appliedCoupon=null,pendingOrder=null;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 function money(n){return 'NT$ '+Number(n||0).toLocaleString('zh-TW')}
 function showToast(t){const el=$('#toast');if(!el)return;el.textContent=t;el.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>el.classList.remove('show'),2800)}
@@ -113,19 +113,84 @@ async function refreshUser(){if(!sb)return;const {data:{session}}=await sb.auth.
 async function logout(){if(sb)await sb.auth.signOut();currentUser=null;profile=null;wishlist=[];orders=[];points=0;coupons=[];notifications=[];closeAccount();updateCounts();renderProducts();showToast('已安全登出 OSC。')}
 async function toggleWishlist(id){if(!currentUser){showToast('請先登入會員，才能保存收藏。');authOpen('login');return}const has=wishlist.includes(id);if(has){const {error}=await sb.from('favorites').delete().eq('user_id',currentUser.id).eq('product_id',id);if(error){showToast(error.message);return}wishlist=wishlist.filter(x=>x!==id);showToast('已從收藏移除')}else{const {error}=await sb.from('favorites').insert({user_id:currentUser.id,product_id:id});if(error){showToast(error.message);return}wishlist=[...wishlist,id];showToast('已加入收藏')}updateCounts();renderProducts($('.filter.active')?.dataset.filter||'all')}
 async function saveProfile(e){e.preventDefault();if(!currentUser)return;const data=new FormData(e.target);const {data:p,error}=await sb.from('profiles').update({name:data.get('name'),phone:data.get('phone')}).eq('id',currentUser.id).select().single();if(error){showToast(error.message);return}profile=p;renderAccount();showToast('會員資料已更新')}
-function renderCheckout(){const subtotal=cart.reduce((a,x)=>a+x.price*x.qty,0),discount=appliedCoupon?.value||0;$('#checkoutSummary').innerHTML=cart.map(x=>`<div><span>${x.name} / ${x.size} × ${x.qty}</span><b>${money(x.price*x.qty)}</b></div>`).join('')+`<div class="summary-line"><span>商品小計</span><b>${money(subtotal)}</b></div>${discount?`<div class="summary-line discount"><span>優惠序號 ${appliedCoupon.code}</span><b>− ${money(discount)}</b></div>`:''}`;$('#checkoutTotal').textContent=money(Math.max(0,subtotal-discount))}
-async function openCheckout(){if(!cart.length){showToast('購物袋目前是空的。');return}if(!currentUser){showToast('請先登入會員，再完成結帳。');authOpen('login');return}appliedCoupon=null;$('#couponCode').value='';$('#couponMsg').textContent='輸入 OSC200｜新會員單筆滿 NT$1,000 折 NT$200';renderCheckout();$('#checkoutModal').classList.add('open');$('#checkoutModal').setAttribute('aria-hidden','false');document.body.classList.add('modal-open')}
-function applyCoupon(){if(!currentUser)return showToast('請先登入會員。');const code=$('#couponCode').value.trim().toUpperCase(),subtotal=cart.reduce((a,x)=>a+x.price*x.qty,0),c=coupons.find(x=>x.code===code&&!x.used_at);if(!c){appliedCoupon=null;$('#couponMsg').textContent='序號無效、已使用或不屬於你的帳戶。';renderCheckout();return}if(code==='OSC200'&&subtotal<1000){appliedCoupon=null;$('#couponMsg').textContent='未達使用門檻：單筆需滿 NT$1,000。';renderCheckout();return}appliedCoupon={id:c.id,code:c.code,value:Number(c.amount)};$('#couponMsg').textContent='已套用 NT$200 新會員券。';renderCheckout();showToast('OSC200 已套用')}
+
+/* ===== 優惠券：改為從使用者自己的優惠券清單勾選，取代原本手動輸入序號 ===== */
+function renderCouponOptions(){
+  const subtotal=cart.reduce((a,x)=>a+x.price*x.qty,0);
+  const available=coupons.filter(c=>!c.used_at);
+  const box=$('#couponList');
+  if(!box)return;
+  if(!available.length){box.innerHTML='<p class="coupon-empty">目前沒有可使用的優惠券。</p>';return}
+  box.innerHTML=available.map(c=>{
+    const eligible=subtotal>=c.min_spend;
+    const selected=appliedCoupon?.id===c.id;
+    return `<button type="button" class="coupon-option ${selected?'selected':''}" data-coupon-id="${c.id}" ${eligible?'':'disabled'}>
+      <span><strong>${c.code}</strong><small>折抵 ${money(c.amount)}｜滿 ${money(c.min_spend)} 可用</small></span>
+      <span>${selected?'✓ 已選擇':(eligible?'選擇':'未達門檻')}</span>
+    </button>`;
+  }).join('');
+}
+function toggleCoupon(id){
+  const subtotal=cart.reduce((a,x)=>a+x.price*x.qty,0);
+  if(appliedCoupon?.id===id){appliedCoupon=null;$('#couponMsg').textContent='已取消套用優惠券。';renderCheckout();return}
+  const c=coupons.find(x=>x.id===id);
+  if(!c){showToast('優惠券資料有誤，請重新整理再試。');return}
+  if(subtotal<c.min_spend){showToast(`未達使用門檻：單筆需滿 ${money(c.min_spend)}。`);return}
+  appliedCoupon={id:c.id,code:c.code,value:Number(c.amount)};
+  $('#couponMsg').textContent=`已套用 ${c.code} 優惠券。`;
+  renderCheckout();
+}
+function renderCheckout(){
+  const subtotal=cart.reduce((a,x)=>a+x.price*x.qty,0),discount=appliedCoupon?.value||0;
+  $('#checkoutSummary').innerHTML=cart.map(x=>`<div><span>${x.name} / ${x.size} × ${x.qty}</span><b>${money(x.price*x.qty)}</b></div>`).join('')+`<div class="summary-line"><span>商品小計</span><b>${money(subtotal)}</b></div>${discount?`<div class="summary-line discount"><span>優惠券 ${appliedCoupon.code}</span><b>− ${money(discount)}</b></div>`:''}`;
+  $('#checkoutTotal').textContent=money(Math.max(0,subtotal-discount));
+  renderCouponOptions();
+}
+function resetCheckoutView(){
+  $('#checkoutStepSummary').style.display='block';
+  $('#checkoutStepPayment').style.display='none';
+}
+async function openCheckout(){if(!cart.length){showToast('購物袋目前是空的。');return}if(!currentUser){showToast('請先登入會員，再完成結帳。');authOpen('login');return}appliedCoupon=null;pendingOrder=null;$('#couponMsg').textContent='';resetCheckoutView();renderCheckout();$('#checkoutModal').classList.add('open');$('#checkoutModal').setAttribute('aria-hidden','false');document.body.classList.add('modal-open')}
+
+/* ===== 結帳流程拆成兩步：先建立「待付款」訂單，確認付款後才核銷優惠券、發放購物里程、清空購物袋 ===== */
 async function placeOrder(){
   if(!currentUser||!sb)return showToast('請先登入會員。');
   const subtotal=cart.reduce((a,x)=>a+x.price*x.qty,0),discount=appliedCoupon?.value||0,finalTotal=Math.max(0,subtotal-discount);
   const orderNo='OSC'+Date.now().toString().slice(-8);
   const {data:order,error}=await sb.from('orders').insert({user_id:currentUser.id,order_no:orderNo,subtotal,discount,total:finalTotal,status:'待付款'}).select().single();
   if(error){showToast(error.message);return}
-  const {error:itemError}=await sb.from('order_items').insert(cart.map(x=>({order_id:order.id,product_id:x.id,product_name:x.name,size:x.size,quantity:x.qty,unit_price:x.price})));if(itemError){showToast(itemError.message);return}
-  if(appliedCoupon){const {error:e}=await sb.from('coupons').update({used_at:new Date().toISOString(),used_order_id:order.id}).eq('id',appliedCoupon.id).eq('user_id',currentUser.id).is('used_at',null);if(e){showToast(e.message);return}}
-  const earned=Math.floor(finalTotal);if(earned>0)await sb.from('points_ledger').insert({user_id:currentUser.id,points:earned,source:'order',reference_id:order.id,description:`訂單 ${orderNo} 購物里程`});
-  cart=[];saveCart();await hydrateUser(currentUser);renderBag();$('#checkoutModal').classList.remove('open');document.body.classList.remove('modal-open');showToast(`訂單 ${orderNo} 已建立，累積 ${earned} 點購物里程`)
+  const {error:itemError}=await sb.from('order_items').insert(cart.map(x=>({order_id:order.id,product_id:x.id,product_name:x.name,size:x.size,quantity:x.qty,unit_price:x.price})));
+  if(itemError){showToast(itemError.message);return}
+
+  pendingOrder=order;
+  $('#paymentOrderNo').textContent=order.order_no;
+  $('#paymentTotal').textContent=money(order.total);
+  $('#checkoutStepSummary').style.display='none';
+  $('#checkoutStepPayment').style.display='block';
+  await hydrateUser(currentUser);
+}
+async function confirmPayment(){
+  if(!pendingOrder||!currentUser)return;
+  const {error:statusError}=await sb.from('orders').update({status:'已付款'}).eq('id',pendingOrder.id).eq('user_id',currentUser.id);
+  if(statusError){showToast(statusError.message);return}
+
+  if(appliedCoupon){
+    const {error:couponError}=await sb.from('coupons').update({used_at:new Date().toISOString(),used_order_id:pendingOrder.id}).eq('id',appliedCoupon.id).eq('user_id',currentUser.id).is('used_at',null);
+    if(couponError){showToast(couponError.message);return}
+  }
+
+  const earned=Math.floor(pendingOrder.total);
+  if(earned>0){const {error:pointsError}=await sb.from('points_ledger').insert({user_id:currentUser.id,points:earned,source:'order',reference_id:pendingOrder.id,description:`訂單 ${pendingOrder.order_no} 購物里程`});if(pointsError){showToast(pointsError.message);return}}
+
+  const finishedOrderNo=pendingOrder.order_no;
+  cart=[];saveCart();
+  await hydrateUser(currentUser);
+  renderBag();
+  $('#checkoutModal').classList.remove('open');
+  document.body.classList.remove('modal-open');
+  resetCheckoutView();
+  showToast(`訂單 ${finishedOrderNo} 已付款完成，累積 ${earned} 點購物里程`);
+  pendingOrder=null;appliedCoupon=null;
 }
 function joinCommunity(){if(currentUser){document.querySelector('#newsletter')?.scrollIntoView({behavior:'smooth'});showToast('已開啟 OSC Community 訂閱入口。')}else authOpen('register')}
 
@@ -136,7 +201,7 @@ $('#modalSizes').addEventListener('click',e=>{const b=e.target.closest('[data-si
 $('#bagBtn').addEventListener('click',()=>{renderBag();showDrawer('#bagDrawer')});$('#accountBtn').addEventListener('click',()=>openAccount('overview'));$$('[data-account]').forEach(b=>b.addEventListener('click',()=>{toggleMenu(false);hideDrawers();openAccount('overview')}));$$('[data-wishlist]').forEach(b=>b.addEventListener('click',()=>{toggleMenu(false);hideDrawers();openAccount('wishlist')}));$$('[data-close-drawer]').forEach(b=>b.addEventListener('click',hideDrawers));
 $('#menuBtn').addEventListener('click',()=>toggleMenu(!$('#menuOverlay').classList.contains('open')));$('#menuClose').addEventListener('click',()=>toggleMenu(false));$$('[data-close-menu]').forEach(b=>b.addEventListener('click',()=>toggleMenu(false)));$('[data-menu="shop"]').addEventListener('click',()=>toggleMenu(true));
 $('#searchBtn').addEventListener('click',()=>toggleSearch(true));$('#searchClose').addEventListener('click',()=>toggleSearch(false));$('#searchInput').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase(),list=q?products.filter(p=>(p.name+p.categoryLabel+p.desc).toLowerCase().includes(q)):[];$('#searchResults').innerHTML=q?(list.length?list.map(p=>`<button class="search-result" data-search-id="${p.id}"><span>${p.name}</span><strong>${money(p.price)}</strong></button>`).join(''):'<p>找不到相符商品。</p>'):'<p>輸入商品、系列或企劃名稱。</p>'});$('#searchResults').addEventListener('click',e=>{const b=e.target.closest('[data-search-id]');if(b){toggleSearch(false);openProduct(b.dataset.searchId)}});
-$('#bagItems').addEventListener('click',e=>{const b=e.target.closest('[data-remove]');if(!b)return;cart.splice(Number(b.dataset.remove),1);saveCart();renderBag()});$('#checkoutBtn').addEventListener('click',openCheckout);$('#checkoutClose').addEventListener('click',()=>{$('#checkoutModal').classList.remove('open');document.body.classList.remove('modal-open')});$('#applyCouponBtn').addEventListener('click',applyCoupon);$('#placeOrderBtn').addEventListener('click',placeOrder);
+$('#bagItems').addEventListener('click',e=>{const b=e.target.closest('[data-remove]');if(!b)return;cart.splice(Number(b.dataset.remove),1);saveCart();renderBag()});$('#checkoutBtn').addEventListener('click',openCheckout);$('#checkoutClose').addEventListener('click',()=>{$('#checkoutModal').classList.remove('open');document.body.classList.remove('modal-open')});$('#couponList').addEventListener('click',e=>{const b=e.target.closest('[data-coupon-id]');if(!b||b.disabled)return;toggleCoupon(b.dataset.couponId)});$('#placeOrderBtn').addEventListener('click',placeOrder);$('#confirmPaymentBtn').addEventListener('click',confirmPayment);
 ['myListBtn','accountListBtn','footerListBtn'].forEach(id=>{$('#'+id)?.addEventListener('click',()=>{toggleMenu(false);hideDrawers();openAccount('list')})});['ordersBtn','accountOrdersBtn','footerOrdersBtn'].forEach(id=>{$('#'+id)?.addEventListener('click',()=>{toggleMenu(false);hideDrawers();openAccount('orders')})});$('#accountDataBtn')?.addEventListener('click',()=>{hideDrawers();openAccount('data')});$('#notifyBtn')?.addEventListener('click',()=>{toggleMenu(false);openAccount('notifications')});$('#wishlistBtn').addEventListener('click',()=>openAccount('wishlist'));$('#mobileShopBtn').addEventListener('click',()=>openProduct(1));
 $('#newsletterForm').addEventListener('submit',async e=>{e.preventDefault();const email=$('#emailInput').value.trim();if(!email)return;if(supabaseReady){const {error}=await sb.from('community_subscribers').upsert({email},{onConflict:'email'});if(error){showToast(error.message);return}}$('#newsletterMsg').textContent='已加入 OSC Community。下一次 DROP，我們會通知你。';showToast('歡迎加入 OSC Community');e.target.reset()});
 $('#loginBtn').addEventListener('click',()=>authOpen(currentUser?'login':'register'));$$('[data-auth-mode]').forEach(b=>b.addEventListener('click',()=>setAuthMode(b.dataset.authMode)));$('#authForm').addEventListener('submit',doAuth);$('#authClose').addEventListener('click',authClose);$('#profileQuizForm').addEventListener('submit',e=>{e.preventDefault();completeRegistration()});$('#verifyDemoBtn').addEventListener('click',verifyRegistration);$('#resendWelcomeBtn').addEventListener('click',resendWelcome);$('#authPassword').addEventListener('input',updatePasswordMeter);
