@@ -1,7 +1,7 @@
 const products = [
-  {id:1,name:'ONE STROKE TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:1680,tag:'DROP 001',desc:'左胸主 Logo，右袖波浪線。厚磅純棉、落肩剪裁，從日常到移動都能穿。',details:'240g 厚磅純棉｜寬鬆落肩｜ONE STROKE 線條印刷｜台灣設計',fit:'Relaxed Fit。建議依平常尺寸選擇；喜歡更寬鬆可選大一碼。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗滌，避免長時間烘乾與直接高溫熨燙。'},
-  {id:2,name:'LINE HOODIE',category:'top',categoryLabel:'上衣 / HOODIE',price:2980,tag:'DROP 001',desc:'領口 ONE STROKE CLUB，中間直向波浪線。Minimal / Essential 定位。',details:'420g 棉混紡｜落肩｜雙層帽｜袖口羅紋｜LINE GRAPHIC',fit:'Relaxed / Oversized。適合秋冬層次穿搭。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'反面冷水洗，低溫烘乾或自然陰乾。'},
-  {id:3,name:'STATEMENT TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:1880,tag:'DROP 001',desc:'實心主 Logo，背面大型 ONE STROKE CLUB 直向排列。最強烈的一件。',details:'260g 厚磅棉｜正反面品牌圖像｜寬肩版型｜DROP 001',fit:'Regular Relaxed。版型挺、肩線略落。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗，避免漂白與高溫。'}
+  {id:1,name:'ONE STROKE TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:490,tag:'DROP 001',desc:'左胸主 Logo，右袖波浪線。厚磅純棉、落肩剪裁，從日常到移動都能穿。',details:'240g 厚磅純棉｜寬鬆落肩｜ONE STROKE 線條印刷｜台灣設計',fit:'Relaxed Fit。建議依平常尺寸選擇；喜歡更寬鬆可選大一碼。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗滌，避免長時間烘乾與直接高溫熨燙。'},
+  {id:2,name:'LINE HOODIE',category:'top',categoryLabel:'上衣 / HOODIE',price:490,tag:'DROP 001',desc:'領口 ONE STROKE CLUB，中間直向波浪線。Minimal / Essential 定位。',details:'420g 棉混紡｜落肩｜雙層帽｜袖口羅紋｜LINE GRAPHIC',fit:'Relaxed / Oversized。適合秋冬層次穿搭。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'反面冷水洗，低溫烘乾或自然陰乾。'},
+  {id:3,name:'STATEMENT TEE',category:'top',categoryLabel:'上衣 / T-SHIRT',price:490,tag:'DROP 001',desc:'實心主 Logo，背面大型 ONE STROKE CLUB 直向排列。最強烈的一件。',details:'260g 厚磅棉｜正反面品牌圖像｜寬肩版型｜DROP 001',fit:'Regular Relaxed。版型挺、肩線略落。',shipping:'台灣本島宅配／超商取貨。正式上線後依物流規則計算。',care:'建議反面冷水洗，避免漂白與高溫。'}
 ];
 const futureCategories={bottom:'褲子',outer:'外套',accessory:'配件'};
 const productImg='product-sheet.png', officialShirtLogo='shirt-logo-official.png';
